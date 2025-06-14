@@ -839,8 +839,8 @@ function Testimonials({ image, type }) {
                   variants={fadeInUp}
                   key={index}
                 >
-                  <p
-                    className={`!text-2xl md:!text-3xl lg:!text-4xl !font-light ${
+                  <h1
+                    className={`!text-2xl md:!text-3xl lg:!text-4xl !font-medium ${
                       bgColors[index % 3] === "bg-[#022759]"
                         ? "!text-white"
                         : bgColors[index % 3] === "bg-[#D9EF78]"
@@ -849,7 +849,7 @@ function Testimonials({ image, type }) {
                     } group-hover:!text-white`}
                   >
                     {item.title}
-                  </p>
+                  </h1>
                   <p
                     className={`${
                       bgColors[index % 3] === "bg-[#022759]"
@@ -857,7 +857,7 @@ function Testimonials({ image, type }) {
                         : bgColors[index % 3] === "bg-[#D9EF78]"
                         ? "!text-gray-800"
                         : "!text-gray-800"
-                    } group-hover:!text-white !font-light text-sm md:text-base`}
+                    } group-hover:!text-white !font-medium text-md md:text-base`}
                   >
                     {item.description}
                   </p>

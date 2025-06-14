@@ -28,7 +28,7 @@ function InputFields() {
       <div className="bg-white w-[80%] flex flex-col !-mt-10 items-center justify-center shadow-lg !px-7 !py-5 rounded-2xl gap-5">
         {/* input fields */}
         <div className="flex flex-col items-center justify-center h-full gap-5 w-full">
-          <p className="!font-bold !text-lg">Enter Details</p>
+          <h1 className="!font-bold !text-lg">Enter Details</h1>
           <input
             type="text"
             className="shadow-md !p-5 !rounded-2xl w-full"

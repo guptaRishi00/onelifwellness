@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import spiral from "../assets/images/organexpandpage/spiral.png";
@@ -565,7 +565,7 @@ function OrganExpanPage() {
               />
             </motion.div>
 
-            {/* Information section - SLIGHTLY LARGER THAN PREVIOUS VERSION */}
+            {/* Information section */}
             <motion.div
               className="flex flex-col gap-3 sm:gap-4 bg-white !p-4 md:!p-5 rounded-2xl shadow-lg w-full md:w-4/5 mx-auto"
               variants={fadeInUp}
@@ -715,6 +715,11 @@ function OrganExpanPage() {
                 <div className="text-gray-700 mt-1 sm:mt-2">
                   {renderTabContent()}
                 </div>
+                <Link to={"/blog-page"}>
+                  <button className="!p-2 rounded-lg !mt-2">
+                    Read More{">>"}
+                  </button>
+                </Link>
               </div>
             </motion.div>
           </div>
