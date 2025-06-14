@@ -1,10 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import bgLogo from "../assets/images/blog/bg-logo.png";
 import { CirclePlus, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { getAllBlogPost, getAllBlogs, getCategories } from "../data/loader";
 
 function BlogPage() {
+  const [blogs, setBlogs] = useState();
+
+  const [blogPost, setBlogPost] = useState(null);
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
+
+  const [category, setCategory] = useState([]);
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  console.log("blogPost:", blogPost);
+
+  useEffect(() => {
+    const fetchBlogsAndCategories = async () => {
+      try {
+        const response = await getAllBlogPost(page, 6);
+        setBlogPost(response.data);
+        setPageCount(response.meta.pagination.pageCount);
+
+        const categoryResponse = await getCategories();
+        setCategory(categoryResponse.data);
+      } catch (error) {
+        console.error("Error fetching blogs or categories:", error);
+      }
+    };
+
+    fetchBlogsAndCategories();
+  }, [page]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      const blogs = await getAllBlogs();
+      setBlogs(blogs);
+    };
+
+    fetchBlogs();
+  }, []);
+
+  if (!blogs) {
+    return <div>Loading...</div>;
+  }
+
+  if (!Array.isArray(blogPost) || blogPost.length === 0) {
+    return <div>Loading blog posts...</div>;
+  }
+
+  const sorted = [...blogPost].sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+  const latestPost = sorted[sorted.length - 1];
+
+  console.log("category: ", category);
+
   const today = new Date();
 
   const dayOfWeek = today.toLocaleDateString("en-US", { weekday: "long" });
@@ -15,7 +69,13 @@ function BlogPage() {
     year: "numeric",
   });
 
-  const lorem = new Array(10).fill("Lorem ipsum");
+  const filteredBlogPost = selectedCategory
+    ? blogPost.filter((blog) => blog.category.name === selectedCategory)
+    : blogPost;
+
+  // const category = ["Heart", "Brain", "Bladder", "Muscle"];
+
+  console.log("filteredBlogPost: ", filteredBlogPost);
 
   // Animation variants
   const containerVariants = {
@@ -80,16 +140,26 @@ function BlogPage() {
               <p className="!font-bold !text-lg">{dayOfWeek}</p>
               <p className="!font-medium !text-xs">{formattedDate}</p>
             </span>
-            <div className="flex items-center gap-10">
-              {lorem.map((item, index) => (
+            <div className="flex items-center justify-between w-[70%] ">
+              <motion.p
+                className="!text-lg cursor-pointer hover:border-b hover:border-blue-900 transition-all !font-medium"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.05 }}
+                onClick={() => setSelectedCategory(null)}
+              >
+                All
+              </motion.p>
+              {category.map((item, index) => (
                 <motion.p
-                  className="!text-sm !font-medium"
+                  className="!text-lg cursor-pointer hover:border-b hover:border-blue-900 transition-all !font-medium"
                   key={index}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
+                  onClick={() => setSelectedCategory(item.name)}
                 >
-                  {item}
+                  {item.name}
                 </motion.p>
               ))}
             </div>
@@ -102,10 +172,10 @@ function BlogPage() {
             </motion.button>
           </motion.div>
           <motion.div
-            className="!px-10 !mt-10 grid grid-cols-3 gap-5"
+            className="!px-10 !mt-10 grid grid-cols-1 md:grid md:grid-cols-3 gap-5"
             variants={containerVariants}
           >
-            {/* First Column */}
+            {/* Latest Post */}
             <motion.div
               className="w-full overflow-hidden flex flex-col gap-5"
               variants={itemVariants}
@@ -117,7 +187,7 @@ function BlogPage() {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  Lorem, ipsum.
+                  {latestPost.organType}
                   <motion.div
                     whileHover={{ rotate: 180, scale: 1.2 }}
                     transition={{ duration: 0.3 }}
@@ -147,12 +217,18 @@ function BlogPage() {
                 transition={{ duration: 0.3 }}
               >
                 <img
-                  src="https://plus.unsplash.com/premium_photo-1681966826227-d008a1cfe9c7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  src={`${import.meta.env.VITE_API_STRAPI}${
+                    latestPost.picture.url
+                  }`}
                   alt=""
                   className="object-fit rounded-2xl"
                 />
                 <p className="!text-xs !text-gray-500 !font-medium !mt-2">
-                  {formattedDate}
+                  {new Date(latestPost.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}{" "}
                 </p>
               </motion.div>
               <motion.div
@@ -161,15 +237,11 @@ function BlogPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <h1 className="!text-xl !font-bold ">
-                  Lorem Ipsum dolor sit amet consectetur Feugiat fermentum.
+                <h1 className="!text-xl !font-bold mt-20">
+                  {latestPost.topic}
                 </h1>
                 <p className="!text-sm !font-medium !mt-2">
-                  Lorem ipsum dolor sit amet consectetur. Diam sagittis faucibus
-                  odio pharetra fermentum tellus. Faucibus egestas morbi
-                  elementum vel tortor fames dolor volutpat faucibus. Id quis
-                  faucibus consectetur sit cursus fusce dui. Tempor luctus vel
-                  arcu est.
+                  {latestPost.content.split(" ").slice(0, 80).join(" ") + "..."}
                 </p>
                 <p className="!text-xs !text-gray-500 !font-medium !mt-2">
                   {formattedDate}
@@ -194,15 +266,16 @@ function BlogPage() {
                   />
                 ))}
               </motion.div>
-              <motion.p
-                className="!text-blue-500 underline cursor-pointer"
-                whileHover={{ scale: 1.02, x: 5 }}
-                transition={{ duration: 0.2 }}
-              >
-                Continue reading{">>"}
-              </motion.p>
+              <Link to={`/blog-detail/${latestPost.slug}`}>
+                <motion.p
+                  className="!text-blue-500 underline cursor-pointer"
+                  whileHover={{ scale: 1.02, x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  Continue reading{">>"}
+                </motion.p>
+              </Link>
             </motion.div>
-
             {/* Second Column */}
             <motion.div className="" variants={itemVariants}>
               <div className="flex flex-col gap-5">
@@ -212,7 +285,7 @@ function BlogPage() {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                 >
-                  Lorem, ipsum.
+                  Blogs
                   <motion.div
                     whileHover={{ rotate: 180, scale: 1.2 }}
                     transition={{ duration: 0.3 }}
@@ -223,7 +296,7 @@ function BlogPage() {
                     />
                   </motion.div>
                 </motion.h1>
-                {[1, 2, 3].map((_, index) => (
+                {filteredBlogPost.slice(0, 3).map((blog, index) => (
                   <motion.div
                     key={index}
                     className="shadow-md rounded-2xl !p-5 bg-white flex flex-col gap-8"
@@ -239,45 +312,34 @@ function BlogPage() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        Lorem.
+                        {blog.organType}
                       </motion.button>
                       <p className="!text-xs !text-gray-500 !font-medium !mt-2">
-                        {formattedDate}
+                        {new Date(blog.createdAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}{" "}
                       </p>
                     </div>
                     <div className="flex flex-col gap-2 ">
-                      <h3 className="!text-lg !font-bold">
-                        Lorem Ipsum dolor sit amet consectetur Feugiat
-                        fermentum.
-                      </h3>
+                      <h3 className="!text-lg !font-bold">{blog.title}</h3>
                       <p className="!text-gray-400 !font-medium !text-sm">
-                        Lorem ipsum dolor sit amet consectetur. Diam sagittis
-                        faucibus odio pharetra fermentum tellus. Faucibus
-                        egestas.
+                        {blog.content.split(" ").slice(0, 20).join(" ") + "..."}
                       </p>
-                      {index === 0 ? (
-                        <Link to="/blog-detail/1">
-                          <motion.p
-                            className="!text-blue-500 underline cursor-pointer !text-sm"
-                            whileHover={{ scale: 1.02, x: 5 }}
-                          >
-                            Continue reading{">>"}
-                          </motion.p>
-                        </Link>
-                      ) : (
+                      <Link to={`/blog-detail/${blog.slug}`}>
                         <motion.p
                           className="!text-blue-500 underline cursor-pointer !text-sm"
                           whileHover={{ scale: 1.02, x: 5 }}
                         >
                           Continue reading{">>"}
                         </motion.p>
-                      )}
+                      </Link>
                     </div>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
-
             {/* Third Column */}
             <motion.div className="" variants={itemVariants}>
               <div className="flex flex-col gap-5">
@@ -287,7 +349,7 @@ function BlogPage() {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                  Lorem, ipsum.
+                  Blogs
                   <motion.div
                     whileHover={{ rotate: 180, scale: 1.2 }}
                     transition={{ duration: 0.3 }}
@@ -298,7 +360,7 @@ function BlogPage() {
                     />
                   </motion.div>
                 </motion.h1>
-                {[1, 2, 3].map((_, index) => (
+                {filteredBlogPost.slice(3, 6).map((blog, index) => (
                   <motion.div
                     key={index}
                     className="shadow-md rounded-2xl !p-5 bg-white flex flex-col gap-8"
@@ -314,34 +376,101 @@ function BlogPage() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        Lorem.
+                        {blog.organType}
                       </motion.button>
                       <p className="!text-xs !text-gray-500 !font-medium !mt-2">
-                        {formattedDate}
+                        {new Date(blog.createdAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}{" "}
                       </p>
                     </div>
                     <div className="flex flex-col gap-2 ">
-                      <h3 className="!text-lg !font-bold">
-                        Lorem Ipsum dolor sit amet consectetur Feugiat
-                        fermentum.
-                      </h3>
+                      <h3 className="!text-lg !font-bold">{blog.title}</h3>
                       <p className="!text-gray-400 !font-medium !text-sm">
-                        Lorem ipsum dolor sit amet consectetur. Diam sagittis
-                        faucibus odio pharetra fermentum tellus. Faucibus
-                        egestas.
+                        {blog.content.split(" ").slice(0, 20).join(" ") + "..."}
                       </p>
-                      <motion.p
-                        className="!text-blue-500 underline cursor-pointer !text-sm"
-                        whileHover={{ scale: 1.02, x: 5 }}
-                      >
-                        Continue reading{">>"}
-                      </motion.p>
+                      <Link to={`/blog-detail/${blog.slug}`}>
+                        <motion.p
+                          className="!text-blue-500 underline cursor-pointer !text-sm"
+                          whileHover={{ scale: 1.02, x: 5 }}
+                        >
+                          Continue reading{">>"}
+                        </motion.p>
+                      </Link>
                     </div>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
+            {/* end */}
           </motion.div>
+
+          <div className="flex items-center justify-center gap-2">
+            <button
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              disabled={page === 1}
+              className={`flex items-center gap-1.5 !px-4 !py-2.5 rounded-lg font-medium text-sm transition-all duration-200 ${
+                page === 1
+                  ? "bg-gray-50 text-gray-400 cursor-not-allowed opacity-60"
+                  : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300 shadow-sm hover:shadow"
+              }`}
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 19.5L8.25 12l7.5-7.5"
+                />
+              </svg>
+              Previous
+            </button>
+
+            <div className="flex items-center gap-3 !px-4 !py-2.5 !mx-2">
+              <span className="text-sm text-gray-500">Page</span>
+              <div className="flex items-center gap-1">
+                <span className="font-semibold text-gray-900 text-base !min-w-[1ch] text-center">
+                  {page}
+                </span>
+                <span className="text-gray-400 !text-sm">/</span>
+                <span className="text-gray-600 !text-sm font-medium">
+                  {pageCount}
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setPage((prev) => Math.min(prev + 1, pageCount))}
+              disabled={page === pageCount}
+              className={`flex items-center gap-1.5 !px-4 !py-2.5 rounded-lg !font-medium !text-sm transition-all duration-200 ${
+                page === pageCount
+                  ? "bg-gray-50 text-gray-400 cursor-not-allowed opacity-60"
+                  : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300 shadow-sm hover:shadow"
+              }`}
+            >
+              Next
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                />
+              </svg>
+            </button>
+          </div>
         </motion.div>
       </div>
     </div>

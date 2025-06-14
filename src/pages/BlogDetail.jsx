@@ -1,9 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CirclePlus, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
+import { getBlog } from "../data/loader";
 
 function BlogDetail() {
+  const [blog, setBlog] = useState(null);
+
+  const { slug } = useParams();
+
+  useEffect(() => {
+    const fetchBlog = async () => {
+      const response = await getBlog(slug);
+
+      if (!response) return null;
+
+      setBlog(response.data[0]);
+    };
+
+    if (slug) fetchBlog();
+  }, []);
+
+  if (!blog) {
+    return <div>Loading...</div>;
+  }
+
+  console.log("single blog: ", blog);
+  console.log(
+    "blog pic link: ",
+    `${import.meta.env.VITE_API_STRAPI}${blog.picture?.url}`
+  );
+
   const today = new Date();
 
   const dayOfWeek = today.toLocaleDateString("en-US", { weekday: "long" });
@@ -14,7 +41,7 @@ function BlogDetail() {
     year: "numeric",
   });
 
-  const lorem = new Array(10).fill("Lorem ipsum");
+  const lorem = ["Heart", "Brain", "Bladder", "Muscle"];
 
   // Animation variants
   const containerVariants = {
@@ -92,10 +119,10 @@ function BlogDetail() {
           <p className="!font-bold !text-lg">{dayOfWeek}</p>
           <p className="!font-medium !text-xs">{formattedDate}</p>
         </span>
-        <div className="flex items-center gap-10">
+        <div className="flex items-center w-[70%] justify-between">
           {lorem.map((item, index) => (
             <motion.p
-              className="!text-sm !font-medium"
+              className="!text-lg cursor-pointer hover:border-b hover:border-blue-900 transition-all !font-medium"
               key={index}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -125,16 +152,13 @@ function BlogDetail() {
             className="!text-3xl !font-bold !text-black text-center"
             variants={textRevealVariants}
           >
-            Lorem Ipsum dolor sit amet consectetur Feugiat fermentum.
+            {blog.title}
           </motion.h1>
           <motion.p
             className="!text-xs !font-medium !text-[#8d8d8d] text-center !px-50"
             variants={textRevealVariants}
           >
-            Lorem ipsum dolor sit amet consectetur. Diam sagittis faucibus odio
-            pharetra fermentum tellus. Faucibus egestas morbi elementum vel
-            tortor fames dolor volutpat faucibus. Id quis faucibus consectetur
-            sit cursus fusce dui. Tempor luctus vel arcu est.
+            {blog.subtitle}
           </motion.p>
         </motion.div>
 
@@ -144,7 +168,7 @@ function BlogDetail() {
             variants={imageVariants}
           >
             <motion.img
-              src="https://plus.unsplash.com/premium_photo-1681966826227-d008a1cfe9c7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src={`${import.meta.env.VITE_API_STRAPI}${blog.picture.url}`}
               alt=""
               className="rounded-xl"
               whileHover={{ scale: 1.02 }}
@@ -167,7 +191,7 @@ function BlogDetail() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                Lorem Ipsum dolor sit amet consectetur Feugiat fermentum.
+                {blog.topic}
               </motion.h2>
               <motion.p
                 className="text-justify max-w-none !text-gray-700 space-y-4"
@@ -175,46 +199,7 @@ function BlogDetail() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                Lorem ipsum dolor sit amet consectetur. Velit platea diam sed ut
-                rhoncus. Sed et viverra ullamcorper dictumst elementum mi. Massa
-                elementum adipiscing facilisis nisl. Vitae mauris iaculis nunc
-                facilisi a pretium at lobortis nunc. Sit odio sed consequat
-                scelerisque dolor ac. Scelerisque placerat amet quis vestibulum
-                vitae. Consectetur id eget amet pretium semper pulvinar sit cum.
-                Pellentesque dictumst eu sem in a orci in. Lacus eget varius mi
-                velit sed. Sodales adipiscing ridiculus mattis tempor facilisis
-                elementum pretium tincidunt. Sed mattis augue gravida dolor
-                mattis vulputate quisque dolor erat. Elementum id amet risus
-                vitae. Dictumst sed cursus id ac mattis elit. Ut fringilla arcu
-                quis suspendisse in dolor faucibus. Pharetra vulputate dui
-                turpis aliquet at mi adipiscing curabitur tristique. Vulputate
-                eu diam tristique cursus. Habitant turpis in a egestas aenean ut
-                id laoreet congue. Cras enim auctor suspendisse iaculis nunc
-                venenatis dui. Porttitor enim rhoncus nec morbi quis. Ac sit
-                placerat tempor non facilisi volutpat tristique. Tempus lacus
-                gravida vitae sapien at. Cras sit vitae cras faucibus. Massa
-                feugiat dapibus facilisis gravida pellentesque in. Lorem arcu
-                turpis volutpat pretium lorem sed. Mi enim justo in integer
-                arcu. Nascetur amet volutpat risus tortor scelerisque sociis
-                blandit at amet. Viverra tellus fermentum et tempus auctor
-                egestas. Rhoncus porta odio quisque nulla enim tellus. In
-                euismod lacus turpis cras enim mollis ac nunc et. Odio sed
-                potenti vulputate id volutpat. Sit amet vestibulum pellentesque
-                eros nulla at lectus sed porta. Massa neque eget ultricies nunc
-                non morbi sodales. Egestas nam facilisi posuere volutpat. Tellus
-                non dictum ornare aliquam sem massa sapien orci. Odio ut quisque
-                nec ut lorem massa pellentesque commodo enim. Et adipiscing sed
-                orci augue cursus aliquam. Aliquet facilisis egestas netus urna
-                viverra. Risus sodales et phasellus eget at. Cursus cursus non
-                quis dui nec dui leo. Rhoncus tristique congue nunc eleifend
-                venenatis sit. Eget lectus nunc augue donec ac urna. Dui enim
-                tempor auctor metus. Aenean at gravida habitasse ultricies lorem
-                metus. Nulla sed dictum id commodo risus. Posuere tempus
-                consequat risus magna pellentesque tempor. Quam pulvinar
-                placerat amet semper cursus diam lectus iaculis. Tellus faucibus
-                amet vitae eget vitae proin vivamus. Sed amet nulla neque
-                tincidunt pretium eget vulputate eu malesuada. Placerat
-                elementum vivamus velit elementum mi et nibh nulla.
+                {blog.content}
               </motion.p>
             </motion.div>
             <motion.div
