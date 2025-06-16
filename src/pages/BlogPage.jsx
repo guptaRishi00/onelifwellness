@@ -132,15 +132,17 @@ function BlogPage() {
           animate="visible"
           variants={containerVariants}
         >
+          {/* categories */}
           <motion.div
-            className="flex items-center justify-between !px-10 gap-12 !py-5 w-full h-full"
+            className="lg:flex lg:items-center lg:justify-between !px-10 gap-12 !py-5 w-full h-full"
             variants={headerVariants}
           >
             <span className="!text-[#022759] !font-medium">
               <p className="!font-bold !text-lg">{dayOfWeek}</p>
               <p className="!font-medium !text-xs">{formattedDate}</p>
             </span>
-            <div className="flex items-center justify-between w-[70%] ">
+
+            <div className="lg:flex lg:items-center lg:justify-between w-[70%] ">
               <motion.p
                 className="!text-lg cursor-pointer hover:border-b hover:border-blue-900 transition-all !font-medium"
                 initial={{ opacity: 0 }}
@@ -217,11 +219,9 @@ function BlogPage() {
                 transition={{ duration: 0.3 }}
               >
                 <img
-                  src={`${import.meta.env.VITE_API_STRAPI}${
-                    latestPost.picture.url
-                  }`}
+                  src={latestPost.picture.url}
                   alt=""
-                  className="object-fit rounded-2xl"
+                  className="!object-cover rounded-2xl"
                 />
                 <p className="!text-xs !text-gray-500 !font-medium !mt-2">
                   {new Date(latestPost.createdAt).toLocaleDateString("en-US", {
