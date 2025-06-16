@@ -168,7 +168,7 @@ function BlogDetail() {
             variants={imageVariants}
           >
             <motion.img
-              src={`${import.meta.env.VITE_API_STRAPI}${blog.picture.url}`}
+              src={blog.picture.url}
               alt=""
               className="rounded-xl"
               whileHover={{ scale: 1.02 }}
