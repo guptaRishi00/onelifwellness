@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { CirclePlus, ChevronRight } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { CirclePlus, ArrowUpLeft } from "lucide-react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { getBlog } from "../data/loader";
+import { getBlog, getCategories } from "../data/loader";
 
 function BlogDetail() {
   const [blog, setBlog] = useState(null);
+  const [category, setCategory] = useState([]);
 
   const { slug } = useParams();
 
@@ -19,6 +20,19 @@ function BlogDetail() {
     };
 
     if (slug) fetchBlog();
+  }, []);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoryResponse = await getCategories();
+        setCategory(categoryResponse.data);
+      } catch (error) {
+        console.log(error.message);
+        return null;
+      }
+    };
+    fetchCategories();
   }, []);
 
   if (!blog) {
@@ -42,6 +56,8 @@ function BlogDetail() {
   });
 
   const lorem = ["Heart", "Brain", "Bladder", "Muscle"];
+
+  console.log(category);
 
   // Animation variants
   const containerVariants = {
@@ -111,6 +127,7 @@ function BlogDetail() {
       animate="visible"
       variants={containerVariants}
     >
+      {/* header */}
       <motion.div
         className="flex items-center justify-between !px-10 gap-12 !py-5 w-full h-full !mt-24"
         variants={headerVariants}
@@ -119,26 +136,17 @@ function BlogDetail() {
           <p className="!font-bold !text-lg">{dayOfWeek}</p>
           <p className="!font-medium !text-xs">{formattedDate}</p>
         </span>
-        <div className="flex items-center w-[70%] justify-between">
-          {lorem.map((item, index) => (
-            <motion.p
-              className="!text-lg cursor-pointer hover:border-b hover:border-blue-900 transition-all !font-medium"
-              key={index}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
-            >
-              {item}
-            </motion.p>
-          ))}
-        </div>
-        <motion.button
-          variants={buttonVariants}
-          whileHover="hover"
-          whileTap="tap"
-        >
-          <CirclePlus className="!text-white bg-[#022759] w-10 h-10 !p-2 rounded-lg" />
-        </motion.button>
+
+        <Link to={"/blog-page"}>
+          <motion.button
+            whileHover="hover"
+            whileTap="tap"
+            className="!text-white bg-[#022759] w-20 flex items-center gap-2 h-10 !p-2 rounded-lg"
+          >
+            <ArrowUpLeft className="" />
+            Back
+          </motion.button>
+        </Link>
       </motion.div>
 
       <div className="flex flex-col items-center justify-center gap-5 !px-10 !py-5 w-full h-full">
