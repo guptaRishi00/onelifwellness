@@ -1,91 +1,168 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useCallback, useState } from "react";
 import bgLogo from "../assets/images/blog/bg-logo.png";
 import { CirclePlus, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { getAllBlogPost, getAllBlogs, getCategories } from "../data/loader";
+// import { getAllBlogPost, getAllBlogs, getCategories } from "../data/loader";
+
+import BlogSkeleton from "../components/BlogSkeleton";
+import LazyImage from "../components/LazyImage";
+import { useBlogData } from "../hooks/useBlogData";
+
+// const CategoryButton = React.memo(({ name, onClick, isActive }) => (
+//   <motion.button
+//     className={`text-sm sm:text-base lg:text-lg whitespace-nowrap cursor-pointer hover:border-b ${
+//       isActive
+//         ? "bg-blue-100 border-b border-blue-900"
+//         : "bg-gray-100 hover:border-blue-900"
+//     } py-2 px-4 rounded-xl shadow-lg transition-all font-medium`}
+//     onClick={onClick}
+//     whileHover={{ scale: 1.05 }}
+//     whileTap={{ scale: 0.95 }}
+//   >
+//     {name}
+//   </motion.button>
+// ));
+
+const BlogCard = React.memo(({ blog, index }) => (
+  <motion.div
+    className="shadow-md rounded-2xl !p-4 sm:!p-5 bg-white flex flex-col gap-4 lg:gap-8"
+    whileHover={{
+      y: -5,
+      boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
+      transition: { duration: 0.3 },
+    }}
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: index * 0.1 }}
+  >
+    <div className="flex  sm:flex-row lg:flex-row items-center lg:items-center gap-2 sm:gap-5">
+      <motion.button
+        className="!px-3 !py-1 lg:!p-2 border border-black !text-xs !font-medium rounded self-start"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        {blog.organType}
+      </motion.button>
+      <p className="!text-xs text-gray-500 !font-medium lg:!mt-2">
+        {new Date(blog.createdAt).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })}
+      </p>
+    </div>
+    <div className="flex flex-col gap-2">
+      <h3 className="text-base sm:!text-lg !font-bold">{blog.title}</h3>
+      <p className="text-gray-400 font-medium text-sm">
+        {(blog.content ?? "").split(" ").slice(0, 15).join(" ") + "..."}
+      </p>
+      <Link to={`/blog-detail/${blog.slug}`}>
+        <motion.p
+          className="text-blue-500 underline cursor-pointer !text-sm"
+          whileHover={{ scale: 1.02, x: 5 }}
+          transition={{ duration: 0.2 }}
+        >
+          Continue reading{">>"}
+        </motion.p>
+      </Link>
+    </div>
+  </motion.div>
+));
 
 function BlogPage() {
-  const [blogs, setBlogs] = useState();
-  const [blogPost, setBlogPost] = useState([]);
   const [page, setPage] = useState(1);
-  const [pageCount, setPageCount] = useState(1);
-  const [category, setCategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+
   const [showAllCategories, setShowAllCategories] = useState(false);
 
-  console.log("blogPost:", blogPost);
+  const {
+    blogPost,
+    blogs,
+    categories,
+    pageCount,
+    isLoading,
+    error,
+    latestPost,
+    getFilteredPosts,
+  } = useBlogData(page);
 
-  useEffect(() => {
-    const fetchBlogsAndCategories = async () => {
-      try {
-        const response = await getAllBlogPost(page, 6);
-        setBlogPost(response.data);
-        setPageCount(response.meta.pagination.pageCount);
+  // Memoize filtered posts to prevent unnecessary recalculations
+  const filteredBlogPost = useMemo(
+    () => getFilteredPosts(selectedCategory),
+    [getFilteredPosts, selectedCategory]
+  );
 
-        const categoryResponse = await getCategories();
-        setCategory(categoryResponse.data);
-      } catch (error) {
-        console.error("Error fetching blogs or categories:", error);
-      }
+  // Memoize date calculations
+  const { dayOfWeek, formattedDate } = useMemo(() => {
+    const today = new Date();
+    return {
+      dayOfWeek: today.toLocaleDateString("en-US", { weekday: "long" }),
+      formattedDate: today.toLocaleDateString("en-US", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }),
     };
-
-    fetchBlogsAndCategories();
-  }, [page]);
-
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      const blogs = await getAllBlogs();
-      setBlogs(blogs);
-    };
-
-    fetchBlogs();
   }, []);
 
-  if (!blogs) {
-    return (
-      <div className="!flex !items-center !justify-center !min-h-screen">
-        <div className="!text-lg">Loading...</div>
-      </div>
-    );
-  }
-
-  if (!Array.isArray(blogPost) || blogPost.length === 0) {
-    return (
-      <div className="!flex !items-center !justify-center !min-h-screen">
-        <div className="!text-lg">Loading blog posts...</div>
-      </div>
-    );
-  }
-
-  const sorted = [...blogPost].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  // Memoize category display logic
+  const { categoriesToShow, hasMoreCategories } = useMemo(
+    () => ({
+      categoriesToShow: showAllCategories ? categories : categories.slice(0, 7),
+      hasMoreCategories: categories.length > 7,
+    }),
+    [categories, showAllCategories]
   );
-  const latestPost = sorted[0] || blogPost[0];
 
-  console.log("category: ", category);
+  // Memoized handlers
+  const handleCategorySelect = useCallback((category) => {
+    setSelectedCategory(category);
+  }, []);
 
-  const today = new Date();
-  const dayOfWeek = today.toLocaleDateString("en-US", { weekday: "long" });
-  const formattedDate = today.toLocaleDateString("en-US", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
+  const handleShowMoreCategories = useCallback(() => {
+    setShowAllCategories((prev) => !prev);
+  }, []);
 
-  const filteredBlogPost = selectedCategory
-    ? blogPost.filter(
-        (blog) =>
-          blog?.category?.name?.toLowerCase().trim() ===
-          selectedCategory.toLowerCase().trim()
-      )
-    : blogPost;
+  const handlePageChange = useCallback((newPage) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
-  console.log("filteredBlogPost: ", filteredBlogPost);
+  // Show skeleton while loading
+  if (isLoading) {
+    return <BlogSkeleton />;
+  }
 
-  // Determine which categories to show
-  const categoriesToShow = showAllCategories ? category : category.slice(0, 7);
-  const hasMoreCategories = category.length > 7;
+  // Show error state
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Show empty state
+  if (!latestPost || !Array.isArray(blogPost) || blogPost.length === 0) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">No blog posts found</h2>
+          <p className="text-gray-600">Check back later for new content!</p>
+        </div>
+      </div>
+    );
+  }
 
   // Animation variants
   const containerVariants = {
@@ -105,28 +182,6 @@ function BlogPage() {
       opacity: 1,
       y: 0,
       transition: { duration: 0.5 },
-    },
-  };
-
-  const headerVariants = {
-    hidden: { opacity: 0, y: -50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
-    },
-  };
-
-  const buttonVariants = {
-    hover: { scale: 1.1, rotate: 90, transition: { duration: 0.3 } },
-    tap: { scale: 0.95 },
-  };
-
-  const cardVariants = {
-    hover: {
-      y: -5,
-      boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
-      transition: { duration: 0.3 },
     },
   };
 
@@ -151,7 +206,7 @@ function BlogPage() {
           {/* Header with Categories */}
           <motion.div
             className="!px-4 sm:!px-6 lg:!px-10 !py-4 sm:!py-6"
-            variants={headerVariants}
+            variants={itemVariants}
           >
             {/* Mobile Layout */}
             <div className="!block lg:!hidden !space-y-4">
@@ -187,9 +242,8 @@ function BlogPage() {
                 {hasMoreCategories && (
                   <motion.button
                     className="!ml-4 !flex-shrink-0"
-                    variants={buttonVariants}
-                    whileHover="hover"
-                    whileTap="tap"
+                    whileHover={{ scale: 1.1, rotate: 90 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setShowAllCategories(!showAllCategories)}
                   >
                     <CirclePlus className="!text-white !bg-[#022759] !w-8 !h-8 sm:!w-10 sm:!h-10 !p-2 !rounded-lg" />
@@ -231,9 +285,8 @@ function BlogPage() {
               {hasMoreCategories && (
                 <motion.button
                   className="!flex-shrink-0"
-                  variants={buttonVariants}
-                  whileHover="hover"
-                  whileTap="tap"
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => setShowAllCategories(!showAllCategories)}
                 >
                   <CirclePlus className="!text-white !bg-[#022759] !w-10 !h-10 !p-2 !rounded-lg" />
@@ -385,7 +438,7 @@ function BlogPage() {
                     <motion.div
                       key={index}
                       className="!shadow-md !rounded-2xl !p-4 sm:!p-5 !bg-white !flex !flex-col !gap-4"
-                      variants={cardVariants}
+                      variants={itemVariants}
                       whileHover="hover"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -542,7 +595,7 @@ function BlogPage() {
 
               {/* Second Column - Desktop */}
               <motion.div variants={itemVariants}>
-                <div className="!flex !flex-col !gap-5">
+                <div className="flex flex-col gap-5">
                   <motion.h1
                     className="!flex !items-center !gap-2 !font-bold !text-xl"
                     initial={{ x: -20, opacity: 0 }}
@@ -555,65 +608,24 @@ function BlogPage() {
                       transition={{ duration: 0.3 }}
                     >
                       <ChevronRight
-                        className="!text-white !bg-gray-400 !p-1 !rounded-full"
+                        className="text-white bg-gray-400 p-1 rounded-full"
                         size={18}
                       />
                     </motion.div>
                   </motion.h1>
                   {filteredBlogPost.slice(0, 3).map((blog, index) => (
-                    <motion.div
-                      key={index}
-                      className="!shadow-md !rounded-2xl !p-5 !bg-white !flex !flex-col !gap-8"
-                      variants={cardVariants}
-                      whileHover="hover"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-                    >
-                      <div className="!flex !items-center !gap-5">
-                        <motion.button
-                          className="!p-2 !border !border-black"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          {blog.organType}
-                        </motion.button>
-                        <p className="!text-xs !text-gray-500 !font-medium !mt-2">
-                          {new Date(blog.createdAt).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                            }
-                          )}
-                        </p>
-                      </div>
-                      <div className="!flex !flex-col !gap-2">
-                        <h3 className="!text-lg !font-bold">{blog.title}</h3>
-                        <p className="!text-gray-400 !font-medium !text-sm">
-                          {(blog.content ?? "")
-                            .split(" ")
-                            .slice(0, 20)
-                            .join(" ") + "..."}
-                        </p>
-                        <Link to={`/blog-detail/${blog.slug}`}>
-                          <motion.p
-                            className="!text-blue-500 !underline !cursor-pointer !text-sm"
-                            whileHover={{ scale: 1.02, x: 5 }}
-                          >
-                            Continue reading{">>"}
-                          </motion.p>
-                        </Link>
-                      </div>
-                    </motion.div>
+                    <BlogCard
+                      key={`col2-${blog.id}-${index}`}
+                      blog={blog}
+                      index={index}
+                    />
                   ))}
                 </div>
               </motion.div>
 
               {/* Third Column - Desktop */}
               <motion.div variants={itemVariants}>
-                <div className="!flex !flex-col !gap-5">
+                <div className="flex flex-col gap-5">
                   <motion.h1
                     className="!flex !items-center !gap-2 !font-bold !text-xl"
                     initial={{ x: -20, opacity: 0 }}
@@ -626,56 +638,17 @@ function BlogPage() {
                       transition={{ duration: 0.3 }}
                     >
                       <ChevronRight
-                        className="!text-white !bg-gray-400 !p-1 !rounded-full"
+                        className="text-white bg-gray-400 p-1 rounded-full"
                         size={18}
                       />
                     </motion.div>
                   </motion.h1>
                   {filteredBlogPost.slice(3, 6).map((blog, index) => (
-                    <motion.div
-                      key={index}
-                      className="!shadow-md !rounded-2xl !p-5 !bg-white !flex !flex-col !gap-8"
-                      variants={cardVariants}
-                      whileHover="hover"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                    >
-                      <div className="!flex !items-center !gap-5">
-                        <motion.button
-                          className="!p-2 !border !border-black"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          {blog.organType}
-                        </motion.button>
-                        <p className="!text-xs !text-gray-500 !font-medium !mt-2">
-                          {new Date(blog.createdAt).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                            }
-                          )}
-                        </p>
-                      </div>
-                      <div className="!flex !flex-col !gap-2">
-                        <h3 className="!text-lg !font-bold">{blog.title}</h3>
-                        <p className="!text-gray-400 !font-medium !text-sm">
-                          {blog.content.split(" ").slice(0, 20).join(" ") +
-                            "..."}
-                        </p>
-                        <Link to={`/blog-detail/${blog.slug}`}>
-                          <motion.p
-                            className="!text-blue-500 !underline !cursor-pointer !text-sm"
-                            whileHover={{ scale: 1.02, x: 5 }}
-                          >
-                            Continue reading{">>"}
-                          </motion.p>
-                        </Link>
-                      </div>
-                    </motion.div>
+                    <BlogCard
+                      key={`col3-${blog.id}-${index}`}
+                      blog={blog}
+                      index={index}
+                    />
                   ))}
                 </div>
               </motion.div>
