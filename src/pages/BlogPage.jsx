@@ -1,28 +1,13 @@
 import React, { useEffect, useMemo, useCallback, useState } from "react";
 import bgLogo from "../assets/images/blog/bg-logo.png";
 import { CirclePlus, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 // import { getAllBlogPost, getAllBlogs, getCategories } from "../data/loader";
+// import LazyImage from "../components/LazyImage";
 
 import BlogSkeleton from "../components/BlogSkeleton";
-import LazyImage from "../components/LazyImage";
 import { useBlogData } from "../hooks/useBlogData";
-
-// const CategoryButton = React.memo(({ name, onClick, isActive }) => (
-//   <motion.button
-//     className={`text-sm sm:text-base lg:text-lg whitespace-nowrap cursor-pointer hover:border-b ${
-//       isActive
-// ? "bg-blue-100 border-b border-blue-900"
-//         : "bg-gray-100 hover:border-blue-900"
-//     } py-2 px-4 rounded-xl shadow-lg transition-all font-medium`}
-//     onClick={onClick}
-//     whileHover={{ scale: 1.05 }}
-//     whileTap={{ scale: 0.95 }}
-//   >
-//     {name}
-//   </motion.button>
-// ));
 
 const BlogCard = React.memo(({ blog, index }) => (
   <motion.div
@@ -74,6 +59,18 @@ function BlogPage() {
   const [page, setPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const organTypeParam = queryParams.get("organType");
+
+  useEffect(() => {
+    if (organTypeParam) {
+      setSelectedCategory(organTypeParam);
+    }
+  }, [organTypeParam]);
+
+  // console.log("organTypeParam: ", organTypeParam);
+
   const [showAllCategories, setShowAllCategories] = useState(false);
 
   const {
@@ -114,20 +111,6 @@ function BlogPage() {
     }),
     [categories, showAllCategories]
   );
-
-  // Memoized handlers
-  const handleCategorySelect = useCallback((category) => {
-    setSelectedCategory(category);
-  }, []);
-
-  const handleShowMoreCategories = useCallback(() => {
-    setShowAllCategories((prev) => !prev);
-  }, []);
-
-  const handlePageChange = useCallback((newPage) => {
-    setPage(newPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
 
   // Show skeleton while loading
   if (isLoading) {
