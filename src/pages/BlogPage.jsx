@@ -13,7 +13,7 @@ import { useBlogData } from "../hooks/useBlogData";
 //   <motion.button
 //     className={`text-sm sm:text-base lg:text-lg whitespace-nowrap cursor-pointer hover:border-b ${
 //       isActive
-//         ? "bg-blue-100 border-b border-blue-900"
+// ? "bg-blue-100 border-b border-blue-900"
 //         : "bg-gray-100 hover:border-blue-900"
 //     } py-2 px-4 rounded-xl shadow-lg transition-all font-medium`}
 //     onClick={onClick}

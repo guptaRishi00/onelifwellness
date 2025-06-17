@@ -4,7 +4,7 @@ const BlogSkeleton = () => {
   return (
     <div className="min-h-screen bg-gray-50 animate-pulse">
       {/* Header Skeleton */}
-      <div className="px-4 sm:px-6 lg:px-10 py-4 sm:py-6">
+      <div className="!px-4 sm:!px-6 lg:!px-10 !py-4 sm:!py-6">
         <div className="block lg:hidden space-y-4">
           <div className="space-y-2">
             <div className="h-5 bg-gray-200 rounded w-20"></div>
@@ -31,7 +31,7 @@ const BlogSkeleton = () => {
       </div>
 
       {/* Content Skeleton */}
-      <div className="px-4 sm:px-6 lg:px-10 mt-6">
+      <div className="!px-4 sm:!px-6 lg:!px-10 !mt-6">
         {/* Mobile Layout Skeleton */}
         <div className="block lg:hidden space-y-8">
           {/* Main post skeleton */}
@@ -48,7 +48,7 @@ const BlogSkeleton = () => {
           {/* Blog cards skeleton */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl p-4 space-y-3">
+              <div key={i} className="bg-white rounded-2xl !p-4 space-y-3">
                 <div className="h-4 bg-gray-200 rounded w-20"></div>
                 <div className="h-5 bg-gray-200 rounded w-3/4"></div>
                 <div className="h-4 bg-gray-200 rounded w-full"></div>
@@ -76,11 +76,11 @@ const BlogSkeleton = () => {
             <div key={colIndex} className="space-y-5">
               <div className="h-6 bg-gray-200 rounded w-20"></div>
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="bg-white rounded-2xl p-5 space-y-3">
-                  <div className="h-4 bg-gray-200 rounded w-20"></div>
-                  <div className="h-5 bg-gray-200 rounded w-3/4"></div>
-                  <div className="h-4 bg-gray-200 rounded w-full"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                <div key={i} className="bg-white rounded-2xl !p-5 space-y-3">
+                  <div className="!h-4 bg-gray-200 rounded w-20"></div>
+                  <div className="!h-5 bg-gray-200 rounded w-3/4"></div>
+                  <div className="!h-4 bg-gray-200 rounded w-full"></div>
+                  <div className="!h-4 bg-gray-200 rounded w-1/2"></div>
                 </div>
               ))}
             </div>
