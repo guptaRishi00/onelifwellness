@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { CirclePlus, ArrowUpLeft } from "lucide-react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { ArrowUpLeft } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { getBlog, getCategories } from "../data/loader";
+import { getAllBlogs, getBlog, getCategories } from "../data/loader";
 
 function BlogDetail() {
   const [blog, setBlog] = useState(null);
   const [category, setCategory] = useState([]);
+
+  const [randomBlog, setRandomBlog] = useState([]);
 
   const { slug } = useParams();
 
@@ -15,12 +17,20 @@ function BlogDetail() {
       const response = await getBlog(slug);
 
       if (!response) return null;
-
       setBlog(response.data[0]);
+
+      const res = await getAllBlogs();
+
+      if (res.length > 0) {
+        const random = res[Math.floor(Math.random() * res.length)];
+        setRandomBlog(random);
+      }
     };
 
     if (slug) fetchBlog();
   }, []);
+
+  console.log("random", randomBlog);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -228,23 +238,21 @@ function BlogDetail() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Lorem.
+                    {randomBlog.organType}
                   </motion.button>
                   <p className="!text-xs !text-gray-500 !font-medium !mt-2">
                     {formattedDate}
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 ">
-                  <h3 className="!text-lg !font-bold">
-                    Lorem Ipsum dolor sit amet consectetur Feugiat fermentum.
-                  </h3>
+                  <h3 className="!text-lg !font-bold">{randomBlog.topic}</h3>
                   <p className="!text-gray-400 !font-medium !text-sm">
-                    Lorem ipsum dolor sit amet consectetur. Diam sagittis
-                    faucibus odio pharetra fermentum tellus. Faucibus egestas.
+                    {randomBlog.content?.split(" ").slice(0, 40).join(" ") +
+                      "..."}
                   </p>
-                  <Link to="/blog-detail/1">
+                  <Link to={`/blog-detail/${randomBlog.slug}`}>
                     <motion.p
-                      className="!text-blue-500 underline cursor-pointer !text-sm"
+                      className="!text-blue-500 !underline !cursor-pointer !text-sm"
                       whileHover={{ scale: 1.02, x: 5 }}
                       transition={{ duration: 0.2 }}
                     >

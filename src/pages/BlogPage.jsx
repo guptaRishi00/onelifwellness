@@ -209,7 +209,7 @@ function BlogPage() {
               {/* Categories */}
               <div className="!flex !items-center !justify-between !space-x-8 !flex-1">
                 <motion.button
-                  className="!text-lg !cursor-pointer hover:!border-b hover:!border-blue-900 !transition-all !font-medium"
+                  className="!text-lg !cursor-pointer hover:!border-b !bg-gray-100 !py-2 !px-4 rounded-xl shadow-lg hover:!border-blue-900 !transition-all !font-medium"
                   onClick={() => setSelectedCategory(null)}
                   whileHover={{ scale: 1.05 }}
                 >
@@ -217,7 +217,7 @@ function BlogPage() {
                 </motion.button>
                 {categoriesToShow?.map((item, index) => (
                   <motion.button
-                    className="!text-lg !cursor-pointer hover:!border-b hover:!border-blue-900 !transition-all !font-medium"
+                    className="!text-lg !cursor-pointer hover:!border-b !bg-gray-100 !py-2 !px-4 rounded-xl shadow-lg hover:!border-blue-900 !transition-all !font-medium"
                     key={index}
                     onClick={() => setSelectedCategory(item.name)}
                     whileHover={{ scale: 1.05 }}

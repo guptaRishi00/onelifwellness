@@ -772,6 +772,9 @@ function OrganExpanPage() {
                   {openIndex === index && (
                     <div className="!px-2 sm:!px-3 md:!px-4 !pb-2 sm:!pb-3 md:!pb-4 !text-gray-600 !text-xs sm:!text-sm">
                       <p>{item.answer}</p>
+                      <Link to={"/blog-page"} className="!font-medium !mt-5">
+                        Read More {">>"}
+                      </Link>
                     </div>
                   )}
                 </motion.div>

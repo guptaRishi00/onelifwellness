@@ -54,11 +54,9 @@ const Header = () => {
     { path: "/who-we-are", label: "Who We Are" },
     { path: "/how-we-work", label: "How We Work" },
     { path: "/why-it-matters", label: "Why It Matters" },
-    { path: "/lets-talk", label: "Let's Talk" },
-
     { path: "/human-anatomy", label: "Human Anatomy" },
-
     { path: "/blog-page", label: "Blog" },
+    { path: "/lets-talk", label: "Let's Talk" },
   ];
 
   // Animation variants for dropdown effect
