@@ -75,7 +75,7 @@ function BlogPage() {
 
   const {
     blogPost,
-    blogs,
+
     categories,
     pageCount,
     isLoading,
