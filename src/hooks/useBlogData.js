@@ -1,21 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
-import { getStrapiURL } from "../utils/getStrapiUrl";
-import qs from "qs";
-import { fetchAPI } from "../utils/fetchApi";
 
-const blogQuery = qs.stringify({
-  populate: {
-    picture: {
-      fields: ["url", "alternativeText"],
-    },
-    category: {
-      fields: ["name"],
-    },
-  },
-});
-
-// Mock functions - replace with your actual API calls
 const getAllBlogPost = async (page, pageSize) => {
   const response = await axios.get(
     `${
@@ -28,17 +13,6 @@ const getAllBlogPost = async (page, pageSize) => {
     }
   );
   return response.data;
-};
-
-const getAllBlogs = async () => {
-  const path = "/api/pages";
-  const BASE_URL = getStrapiURL();
-
-  const url = new URL(path, BASE_URL);
-
-  url.search = blogQuery;
-
-  return await fetchAPI(url.href);
 };
 
 const getCategories = async () => {
@@ -55,34 +29,25 @@ const getCategories = async () => {
 
 export const useBlogData = (page) => {
   const [blogPost, setBlogPost] = useState([]);
-  const [blogs, setBlogs] = useState(null);
   const [categories, setCategories] = useState([]);
   const [pageCount, setPageCount] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Memoize the fetch function to prevent unnecessary re-renders
   const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
 
-      // Fetch all data in parallel for better performance
-      const [blogPostResponse, blogsResponse, categoriesResponse] =
-        await Promise.all([
-          getAllBlogPost(page, 6),
-          blogs ? Promise.resolve(blogs) : getAllBlogs(),
-          categories.length > 0
-            ? Promise.resolve({ data: categories })
-            : getCategories(),
-        ]);
+      const [blogPostResponse, categoriesResponse] = await Promise.all([
+        getAllBlogPost(page, 6),
+        categories.length > 0
+          ? Promise.resolve({ data: categories })
+          : getCategories(),
+      ]);
 
       setBlogPost(blogPostResponse.data || []);
       setPageCount(blogPostResponse.meta?.pagination?.pageCount || 1);
-
-      if (!blogs) {
-        setBlogs(blogsResponse);
-      }
 
       if (categories.length === 0) {
         setCategories(categoriesResponse.data || []);
@@ -93,13 +58,12 @@ export const useBlogData = (page) => {
     } finally {
       setIsLoading(false);
     }
-  }, [page, blogs, categories.length]);
+  }, [page, categories.length]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  // Memoize the latest post calculation
   const latestPost = useMemo(() => {
     if (!Array.isArray(blogPost) || blogPost.length === 0) return null;
 
@@ -110,12 +74,10 @@ export const useBlogData = (page) => {
     return sorted[0] || blogPost[0];
   }, [blogPost]);
 
-  // Memoize filtered blog posts
   const getFilteredPosts = useCallback(
     (selectedCategory) => {
       if (!selectedCategory || !Array.isArray(blogPost)) return blogPost;
 
-      // Ensure selectedCategory is a string before calling toLowerCase
       const categoryString =
         typeof selectedCategory === "string"
           ? selectedCategory
@@ -132,7 +94,6 @@ export const useBlogData = (page) => {
 
   return {
     blogPost,
-    blogs,
     categories,
     pageCount,
     isLoading,
