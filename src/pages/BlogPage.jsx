@@ -518,6 +518,7 @@ function BlogPage() {
                     src={latestPost.picture.url}
                     alt=""
                     className="!object-cover !rounded-2xl !w-full !h-full"
+                    loading="lazy"
                   />
                   <p className="!text-xs !text-gray-500 !font-medium !mt-2">
                     {new Date(latestPost.createdAt).toLocaleDateString(
@@ -562,6 +563,7 @@ function BlogPage() {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.4, delay: index * 0.1 }}
                       whileHover={{ scale: 1.05 }}
+                      loading="lazy"
                     />
                   ))}
                 </motion.div>
