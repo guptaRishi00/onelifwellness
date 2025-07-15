@@ -7,7 +7,7 @@ function AnatomyTitle() {
       <div className="olw-hero-pulse-image"></div>
 
       <OLWHero
-        heading="Ananomy of Human System"
+        heading="Anatomy of Human System"
         subHeading=""
         fontSize="50px"
       />
