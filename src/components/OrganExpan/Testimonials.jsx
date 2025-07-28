@@ -158,7 +158,7 @@ function Testimonials({ image, type }) {
     ],
   };
 
-  const currentFaq = allFAQs[type];
+  const currentFaq = allFAQs[type] || allFAQs.brain; // Fallback to brain if type doesn't exist
 
   const basicFacts = {
     brain: {
@@ -316,7 +316,7 @@ function Testimonials({ image, type }) {
     },
   };
 
-  const currentFacts = basicFacts[type];
+  const currentFacts = basicFacts[type] || basicFacts.brain; // Fallback to brain if type doesn't exist
 
   const benefits = {
     brain: {
@@ -498,7 +498,7 @@ function Testimonials({ image, type }) {
     },
   };
 
-  const currentBenefits = benefits[type];
+  const currentBenefits = benefits[type] || benefits.brain; // Fallback to brain if type doesn't exist
 
   // Background colors for benefits section
   const bgColors = ["bg-[#022759]", "bg-[#D9EF78]", "bg-[#F1F2ED]"];
@@ -568,14 +568,14 @@ function Testimonials({ image, type }) {
 
   // Carousel navigation
   const nextSlide = () => {
-    if (currentFacts.fact.length <= itemsPerSlide) return;
+    if (!currentFacts?.fact || currentFacts.fact.length <= itemsPerSlide) return;
 
     const maxSlide = Math.ceil(currentFacts.fact.length / itemsPerSlide) - 1;
     setCurrentSlide((prev) => (prev === maxSlide ? 0 : prev + 1));
   };
 
   const prevSlide = () => {
-    if (currentFacts.fact.length <= itemsPerSlide) return;
+    if (!currentFacts?.fact || currentFacts.fact.length <= itemsPerSlide) return;
 
     const maxSlide = Math.ceil(currentFacts.fact.length / itemsPerSlide) - 1;
     setCurrentSlide((prev) => (prev === 0 ? maxSlide : prev - 1));
@@ -603,13 +603,14 @@ function Testimonials({ image, type }) {
 
   // Calculate visible items for current slide
   const getVisibleItems = () => {
+    if (!currentFacts?.fact) return [];
     const start = currentSlide * itemsPerSlide;
     const end = start + itemsPerSlide;
     return currentFacts.fact.slice(start, end);
   };
 
   // Calculate dots for pagination
-  const totalDots = Math.ceil(currentFacts.fact.length / itemsPerSlide);
+  const totalDots = Math.ceil((currentFacts?.fact?.length || 0) / itemsPerSlide);
 
   return (
     <div className="">
@@ -639,16 +640,16 @@ function Testimonials({ image, type }) {
             }
           `}</style>
 
-          <p className="!text-gray-300">{currentFacts.sub}</p>
+          <p className="!text-gray-300">{currentFacts?.sub || 'Facts'}</p>
           <div className="flex flex-wrap items-center !gap-3 md:!gap-5">
             <h2 className="!text-2xl md:!text-3xl lg:!text-4xl !font-medium !text-[#032659]">
-              {currentFacts.title}
+              {currentFacts?.title || 'Organ Facts'}
             </h2>
             <p className="!text-4xl md:!text-6xl lg:!text-8xl !font-thin !text-gray-300">
               /
             </p>
             <div className="!text-gray-600 !mt-1">
-              <p>{currentFacts.description}</p>
+              <p>{currentFacts?.description || 'Quick insights into your body\'s organs.'}</p>
             </div>
           </div>
 
@@ -745,7 +746,7 @@ function Testimonials({ image, type }) {
             animate="visible"
           >
             {currentFaq &&
-              currentFaq.map((faq, index) => (
+              (currentFaq || []).map((faq, index) => (
                 <motion.div
                   key={index}
                   className={`transition-all duration-300 ${
@@ -822,7 +823,7 @@ function Testimonials({ image, type }) {
               </p>
               <div className="!text-gray-600 !mt-1">
                 <p className="w-full md:w-3/4 lg:w-1/2">
-                  {currentBenefits.description}
+                  {currentBenefits?.description || 'Support your organ health with simple, science-backed habits.'}
                 </p>
               </div>
             </div>
@@ -831,7 +832,7 @@ function Testimonials({ image, type }) {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 !gap-3 md:!gap-4 !p-2 md:!p-4 !mt-5 md:!mt-10"
               variants={staggerContainer}
             >
-              {currentBenefits.insight.slice(0, 7).map((item, index) => (
+              {(currentBenefits?.insight || []).slice(0, 7).map((item, index) => (
                 <motion.div
                   className={`flex flex-col justify-between !gap-3 md:!gap-5 !px-6 md:!px-10 !py-12 md:!py-24 cursor-pointer rounded-3xl md:rounded-4xl ${
                     bgColors[index % 3]

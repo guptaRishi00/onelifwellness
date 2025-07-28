@@ -182,19 +182,17 @@ function AnatomyCard({ organType }) {
           animate="visible"
           exit="exit"
         >
-          {currentOrgan.icons.map((icon, index) => (
+          <Link className="w-full" to={`/organ-expand/${organType}`}>
             <motion.div
-              key={index}
-              className="bg-white !p-2 md:!p-8 rounded-lg md:rounded-2xl"
+              className="bg-white !p-2 md:!p-8 rounded-lg md:rounded-2xl w-full text-center text-2xl"
               variants={iconVariants}
               initial="hidden"
               animate="visible"
-              custom={index}
               whileHover={{ y: -5 }}
             >
-              {icon}
+              Read More
             </motion.div>
-          ))}
+          </Link>
         </motion.div>
       </AnimatePresence>
     </motion.div>

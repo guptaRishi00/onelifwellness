@@ -638,7 +638,7 @@ function OrganExpanPage() {
                 {currentOrgan.icons.map((item, index) => (
                   <div
                     key={index}
-                    className="bg-white !p-2 sm:!p-2 rounded-xl flex flex-col items-center justify-center flex-1 "
+                    className="bg-white h-full text-center !p-2 sm:!p-2 rounded-xl flex flex-col items-center justify-center flex-1 "
                   >
                     <div className="mb-1 md:mb-2 text-[#002B5B]">
                       {item.icon}

@@ -16,6 +16,7 @@ import Coming from "../pages/Coming";
 import Welcome from "../pages/Welcome";
 import HumanAnatomy from "../pages/HumanAnatomy";
 import OrganExpanPage from "../pages/OrganExpanPage";
+import OrganExpandArticlePage from "../pages/OrganExpandArticlePage";
 import BlogPage from "../pages/BlogPage";
 import BlogDetail from "../pages/BlogDetail";
 import AdminPage from "../pages/AdminPage";
@@ -76,7 +77,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/organ-expand/:type",
-        element: <OrganExpanPage />,
+        element: <OrganExpandArticlePage />,
       },
       {
         path: "/blog-page",
