@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useCallback, useState } from "react";
 import bgLogo from "../assets/images/blog/bg-logo.png";
 import { CirclePlus, ChevronRight } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 // import { getAllBlogPost, getAllBlogs, getCategories } from "../data/loader";
@@ -61,6 +61,7 @@ function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const organTypeParam = queryParams.get("organType");
 
@@ -141,7 +142,14 @@ function BlogPage() {
   const handleCategorySelect = useCallback((category) => {
     setSelectedCategory(category);
     setPage(1); // Reset to page 1 when category changes
-  }, []);
+    
+    // Update URL based on category selection
+    if (category) {
+      navigate(`/blog-page?organType=${encodeURIComponent(category)}`);
+    } else {
+      navigate('/blog-page');
+    }
+  }, [navigate]);
 
   // Show skeleton while loading
   if (isLoading) {
