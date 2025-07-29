@@ -24,6 +24,10 @@ import Blogs from "../components/Admin/Blogs";
 import BlogFormPage from "../components/Admin/BlogFormPage";
 import AdminLoginForm from "../components/Admin/AdminLoginForm";
 import ProtectedRoute from "../components/Admin/ProtectedRoute";
+import BrainPage from "../pages/BrainPage";
+import HeartPage from "../pages/HeartPage";
+import StomachPage from "../pages/StomachPage";
+import MusclePage from "../pages/MusclePage";
 
 const router = createBrowserRouter([
   {
@@ -76,8 +80,20 @@ const router = createBrowserRouter([
         element: <HumanAnatomy />,
       },
       {
-        path: "/organ-expand/:type",
-        element: <OrganExpandArticlePage />,
+        path: "/organ-expand/brain",
+        element: <BrainPage />,
+      },
+      {
+        path: "/organ-expand/heart",
+        element: <HeartPage />,
+      },
+      {
+        path: "/organ-expand/stomach",
+        element: <StomachPage />,
+      },
+      {
+        path: "/organ-expand/muscle-arm",
+        element: <MusclePage />,
       },
       {
         path: "/blog-page",
