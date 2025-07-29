@@ -147,6 +147,8 @@ function BlogPage() {
     );
   }
 
+  console.log("latestPost: ", latestPost.title);
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -309,18 +311,6 @@ function BlogPage() {
                       />
                     </motion.div>
                   </motion.h1>
-                  <div className="!flex !items-center !gap-3 sm:!gap-5">
-                    {["Lorem", "Lorem", "Lorem"].map((text, index) => (
-                      <motion.p
-                        key={index}
-                        className="hover:!font-medium hover:!underline !cursor-pointer !font-medium !text-xs !text-gray-500 hover:!text-black"
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        {text}
-                      </motion.p>
-                    ))}
-                  </div>
                 </div>
 
                 {/* Image */}
@@ -352,7 +342,7 @@ function BlogPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <h1 className="!text-lg sm:!text-xl !font-bold">
+                  <h1 className="!text-lg sm:!text-xl lg:!text-lg xl:!text-xl !font-bold text-gray-900 lg:text-gray-900">
                     {latestPost.topic}
                   </h1>
                   <p className="!text-sm !font-medium !mt-2">
@@ -366,7 +356,7 @@ function BlogPage() {
 
                 {/* Related Images */}
                 <motion.div
-                  className="!flex !items-center !gap-3 !overflow-x-auto !pb-2"
+                  className=" !items-center !gap-3 !overflow-x-auto !pb-2 hidden"
                   whileInView={{
                     transition: { staggerChildren: 0.1 },
                   }}
@@ -376,7 +366,7 @@ function BlogPage() {
                       key={index}
                       src="https://plus.unsplash.com/premium_photo-1691223733678-095fee90a0a7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV3c3BhcGVyfGVufDB8fDB8fHww"
                       alt=""
-                      className="!rounded-xl !w-24 sm:!w-32 !h-16 sm:!h-20 !object-cover !flex-shrink-0"
+                      className="!rounded-xl hidden !w-24 sm:!w-32 !h-16 sm:!h-20 !object-cover !flex-shrink-0"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -548,7 +538,7 @@ function BlogPage() {
                   </p>
                 </motion.div>
                 <motion.div
-                  className="!flex !items-center !gap-5"
+                  className="!flex !items-center !gap-5 hidden"
                   whileInView={{
                     transition: { staggerChildren: 0.1 },
                   }}
@@ -558,7 +548,7 @@ function BlogPage() {
                       key={index}
                       src="https://plus.unsplash.com/premium_photo-1691223733678-095fee90a0a7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV3c3BhcGVyfGVufDB8fDB8fHww"
                       alt=""
-                      className="!rounded-xl !w-35"
+                      className="!rounded-xl !w-35 hidden"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.4, delay: index * 0.1 }}
