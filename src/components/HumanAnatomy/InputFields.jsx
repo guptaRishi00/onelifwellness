@@ -1,7 +1,35 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import emailjs from "@emailjs/browser";
 
 function InputFields() {
+  const form = useRef();
+  const [status, setStatus] = useState("");
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+    setStatus("Sending...");
+
+    emailjs
+      .sendForm(
+        "service_nhwjamx",
+        "template_cytqq56",
+        form.current,
+        "BRfh47i2hK2ZXCmjO"
+      )
+      .then(
+        (result) => {
+          console.log("SUCCESS!", result.text);
+          setStatus("Message sent successfully! ✅");
+          form.current.reset();
+        },
+        (error) => {
+          console.log("FAILED...", error.text);
+          setStatus("Failed to send message. Please try again. ❌");
+        }
+      );
+  };
+
   const textRef = useRef(null);
   const isInView = useInView(textRef, { once: true, amount: 0.3 });
 
@@ -25,31 +53,44 @@ function InputFields() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <div className="bg-white w-[80%] flex flex-col !-mt-10 items-center justify-center shadow-lg !px-7 !py-5 rounded-2xl gap-5">
-        {/* input fields */}
+      <motion.form
+        ref={form}
+        onSubmit={sendEmail}
+        className="bg-white w-[80%] flex flex-col !-mt-10 items-center justify-center shadow-lg !px-7 !py-5 rounded-2xl gap-5"
+      >
         <div className="flex flex-col items-center justify-center h-full gap-5 w-full">
           <h1 className="!font-bold !text-lg">Enter Details</h1>
+          {/* --- EDITED CODE --- */}
           <input
             type="text"
             className="shadow-md !p-5 !rounded-2xl w-full"
-            placeholder="enter your email"
+            placeholder="enter your name"
+            name="name" // Changed from "user_name" to match {{name}}
+            required
           />
           <input
-            type="text"
+            type="email"
             className="shadow-md !p-5 !rounded-2xl w-full"
             placeholder="enter your email"
+            name="email" // Changed from "user_email" to match {{email}}
+            required
           />
           <textarea
-            name=""
-            id=""
+            name="message" // This was already correct
             className="shadow-md !p-5 !rounded-2xl w-full"
             placeholder="type your message"
+            required
           ></textarea>
-          <button className="w-full bg-[#022759] !text-white !px-5 !py-2 !rounded-xl">
+          {/* --- END OF EDITED CODE --- */}
+          <button
+            type="submit"
+            className="w-full bg-[#022759] !text-white !px-5 !py-2 !rounded-xl"
+          >
             Send message
           </button>
+          {status && <p className="!text-sm !text-center !mt-2">{status}</p>}
         </div>
-      </div>
+      </motion.form>
 
       <div className="!mt-8 !ml-10" ref={textRef}>
         <motion.p
@@ -62,7 +103,6 @@ function InputFields() {
           scientific study of the structure
           <br /> of the human body
         </motion.p>
-
         <motion.h3
           className="!text-6xl !font-bold !mb-4 !text-gray-800"
           initial="hidden"
@@ -73,7 +113,6 @@ function InputFields() {
           Human <br />
           Anatomy
         </motion.h3>
-
         <motion.p
           className="!text-gray-700 text-justify text-sm"
           initial="hidden"

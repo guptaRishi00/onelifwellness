@@ -138,14 +138,14 @@ const Header = () => {
             <div className="flex items-center">
               <NavLink
                 to="/human-anatomy"
-                className={`header-menu-link !font-medium !px-4 !py-2 !rounded-full !backdrop-blur-sm transition-all duration-200 ${
+                className={`header-menu-link font-medium !px-4 !py-2 !rounded-full !backdrop-blur-sm transition-all duration-200 ${
                   isAnatomyDropdownOpen
                     ? "!text-gray-700 !bg-white !bg-opacity-90 !shadow-sm"
                     : "!text-gray-600 hover:!text-white !hover:!bg-white"
                 }`}
                 onClick={handleMenuItemClick}
               >
-                <span>Human Anatomy</span>
+                <span className="!font-bold">Human Anatomy</span>
               </NavLink>
               <button
                 onClick={toggleAnatomyDropdown}

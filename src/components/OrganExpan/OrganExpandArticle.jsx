@@ -15,30 +15,30 @@ const ArticleSection = ({ title, children }) => (
 );
 
 // Component for the infobox on the right side
-const InfoBox = ({ data }) => (
-  <div className="!w-full lg:!w-80 lg:float-right lg:!ml-8 !mb-8 lg:!mb-0 border-2 bg-white shadow-lg rounded-lg overflow-hidden">
-    <h3 className="font-bold text-center text-xl bg-[#ADFB49] text-[#002B5B] !p-4">
-      {data.title}
-    </h3>
-    {data.imageUrl && (
-      <img src={data.imageUrl} alt={data.title} className="!w-full !h-auto" />
-    )}
-    <div className="!p-6">
-      {data.list.map((item, index) => (
-        <div key={index} className="!mb-4 last:!mb-0">
-          <p className="font-bold text-[#002B5B] text-lg !mb-2">{item.name}</p>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
-            {item.functions.map((func, i) => (
-              <li key={i} className="text-sm">
-                {func}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  </div>
-);
+// const InfoBox = ({ data }) => (
+//   <div className="!w-full lg:!w-80 lg:float-right lg:!ml-8 !mb-8 lg:!mb-0 border-2 bg-white shadow-lg rounded-lg overflow-hidden">
+//     <h3 className="font-bold text-center text-xl bg-[#ADFB49] text-[#002B5B] !p-4">
+//       {data.title}
+//     </h3>
+//     {data.imageUrl && (
+//       <img src={data.imageUrl} alt={data.title} className="!w-full !h-auto" />
+//     )}
+//     <div className="!p-6">
+//       {data.list.map((item, index) => (
+//         <div key={index} className="!mb-4 last:!mb-0">
+//           <p className="font-bold text-[#002B5B] text-lg !mb-2">{item.name}</p>
+//           <ul className="list-disc list-inside text-gray-700 space-y-1">
+//             {item.functions.map((func, i) => (
+//               <li key={i} className="text-sm">
+//                 {func}
+//               </li>
+//             ))}
+//           </ul>
+//         </div>
+//       ))}
+//     </div>
+//   </div>
+// );
 
 // The main component that structures the article
 const OrganExpandArticle = ({ data, organType }) => {
@@ -89,7 +89,7 @@ const OrganExpandArticle = ({ data, organType }) => {
           </div>
 
           {/* Infobox if available */}
-          {data.lobes && <InfoBox data={data.lobes} />}
+          {/* {data.lobes && <InfoBox data={data.lobes} />} */}
 
           {/* How It Works Section */}
           {data.howItWorks && (
@@ -151,15 +151,14 @@ const OrganExpandArticle = ({ data, organType }) => {
                 {data.commonMyths.myths.map((item, index) => (
                   <div
                     key={index}
-                    className="bg-red-50 border-l-4 border-red-400 !p-6 rounded-lg"
+                    className="bg-green-50 border-l-4 border-green-400 !p-6 rounded-lg"
                   >
                     <div className="flex items-start">
-                      <div className="text-red-600 !mr-3 !mt-1">❌</div>
                       <div>
-                        <span className="font-bold text-[#002B5B] text-lg block !mb-2">
-                          Myth: {item.myth}
+                        <span className="font-bold text-gray-700 text-lg block !mb-2">
+                          <strong className=""> Myth:</strong> {item.myth}
                         </span>
-                        <span className="text-gray-700">
+                        <span className=" text-[#002B5B]">
                           <strong>Reality:</strong> {item.reality}
                         </span>
                       </div>
