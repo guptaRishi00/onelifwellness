@@ -246,9 +246,9 @@ function BlogPage() {
               </div>
 
               {/* Categories */}
-              <div className="!flex !items-center !justify-between !space-x-8 !flex-1">
+              <div className="!flex !items-center !justify-center gap-10 !space-x-8 !flex-1">
                 <motion.button
-                  className="!text-lg !cursor-pointer hover:!border-b !bg-gray-100 !py-2 !px-4 rounded-xl shadow-lg hover:!border-blue-900 !transition-all !font-medium"
+                  className="!text-lg shadow-sm !cursor-pointer hover:!border-b !bg-gray-100 !py-2 !px-4 rounded-xl hover:!border-blue-900 !transition-all !font-medium"
                   onClick={() => setSelectedCategory(null)}
                   whileHover={{ scale: 1.05 }}
                 >
@@ -256,7 +256,7 @@ function BlogPage() {
                 </motion.button>
                 {categoriesToShow?.map((item, index) => (
                   <motion.button
-                    className="!text-lg !cursor-pointer hover:!border-b !bg-gray-100 !py-2 !px-4 rounded-xl shadow-lg hover:!border-blue-900 !transition-all !font-medium"
+                    className="!text-lg !cursor-pointer hover:!border-b !bg-gray-100 !py-2 !px-4 rounded-xl shadow-sm hover:!border-blue-900 !transition-all !font-medium"
                     key={index}
                     onClick={() => setSelectedCategory(item.name)}
                     whileHover={{ scale: 1.05 }}
@@ -486,7 +486,7 @@ function BlogPage() {
                       />
                     </motion.div>
                   </motion.h1>
-                  <div className="!flex !items-center !gap-5">
+                  {/* <div className="!flex !items-center !gap-5">
                     {["Lorem", "Lorem", "Lorem"].map((text, index) => (
                       <motion.p
                         key={index}
@@ -497,7 +497,7 @@ function BlogPage() {
                         {text}
                       </motion.p>
                     ))}
-                  </div>
+                  </div> */}
                 </div>
                 <motion.div
                   className="!w-full !max-w-[453px] !h-[330px] !mx-auto lg:!mx-0 !mb-2"
@@ -538,7 +538,7 @@ function BlogPage() {
                   </p>
                 </motion.div>
                 <motion.div
-                  className="!flex !items-center !gap-5 hidden"
+                  className=" !items-center !gap-5 hidden"
                   whileInView={{
                     transition: { staggerChildren: 0.1 },
                   }}
@@ -638,7 +638,7 @@ function BlogPage() {
               className={`!flex !items-center !gap-1.5 !px-3 sm:!px-4 !py-2 sm:!py-2.5 !rounded-lg !font-medium !text-sm !transition-all !duration-200 ${
                 page === 1
                   ? "!bg-gray-50 !text-gray-400 !cursor-not-allowed !opacity-60"
-                  : "!bg-white !text-gray-700 !border !border-gray-200 hover:!bg-gray-50 hover:!border-gray-300 !shadow-sm hover:!shadow"
+                  : "!bg-white !text-gray-700 !border !border-gray-200 hover:!bg-gray-50 hover:!border-gray-300"
               }`}
             >
               <svg
