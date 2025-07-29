@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 function MusclePage() {
   return (
@@ -311,9 +313,12 @@ function MusclePage() {
               </p>
             </div>
 
-            <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full">
-              [Read More: Complete Musculoskeletal Health Guide]
-            </button>
+            <Link to="/blog-page?organType=Muscle" className="!inline-block !w-full">
+              <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full flex items-center justify-center gap-2">
+                [Read More: Complete Musculoskeletal Health Guide]
+                <ArrowRight className="!inline-block !ml-2" />
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -367,9 +372,12 @@ function MusclePage() {
               </p>
             </div>
 
-            <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full">
-              [Read More: 20 Fascinating Musculoskeletal Facts]
-            </button>
+            <Link to="/blog-page?organType=Muscle" className="!inline-block !w-full">
+              <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full flex items-center justify-center gap-2">
+                [Read More: 20 Fascinating Musculoskeletal Facts]
+                <ArrowRight className="!inline-block !ml-2" />
+              </button>
+            </Link>
           </div>
         </div>
 

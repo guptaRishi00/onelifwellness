@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 function HeartPage() {
   return (
@@ -172,9 +174,12 @@ function HeartPage() {
           </div>
 
           <div className="!text-center">
-            <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-bold !py-3 !px-6 !rounded-full">
-              📖 Read More: Heart Development Through Life
-            </button>
+            <Link to="/blog-page?organType=Heart" className="!inline-block">
+              <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-bold !py-3 !px-6 !rounded-full flex items-center gap-2 mx-auto">
+                📖 Read More: Heart Development Through Life
+                <ArrowRight />
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -258,9 +263,12 @@ function HeartPage() {
           </div>
 
           <div className="!text-center">
-            <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-bold !py-3 !px-6 !rounded-full">
-              ❤️ Read More: Heart Health Myths Debunked
-            </button>
+            <Link to="/blog-page?organType=Heart" className="!inline-block">
+              <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-bold !py-3 !px-6 !rounded-full flex items-center gap-2">
+                ❤️ Read More: Heart Health Myths Debunked
+                <ArrowRight />
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -307,9 +315,12 @@ function HeartPage() {
             </p>
           </div>
 
-          <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full">
-            [Read More: 15 Amazing Heart Facts]
-          </button>
+          <Link to="/blog-page?organType=Heart" className="!inline-block !w-full">
+            <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full flex items-center justify-center gap-2">
+              [Read More: 15 Amazing Heart Facts]
+              <ArrowRight className="!inline-block !ml-2" />
+            </button>
+          </Link>
         </div>
 
         <h2 className="!text-2xl !font-semibold !text-blue-900 !mb-3">
@@ -384,9 +395,12 @@ function HeartPage() {
             </p>
           </div>
 
-          <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full">
-            [Read More: Complete Heart Health Guide]
-          </button>
+          <Link to="/blog-page?organType=Heart" className="!inline-block !w-full">
+            <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full flex items-center justify-center gap-2">
+              [Read More: Complete Heart Health Guide]
+              <ArrowRight className="!inline-block !ml-2" />
+            </button>
+          </Link>
         </div>
 
         <div className="!bg-green-100 !p-5 !rounded-lg !border !border-green-200">

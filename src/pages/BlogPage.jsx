@@ -3,6 +3,7 @@ import bgLogo from "../assets/images/blog/bg-logo.png";
 import { CirclePlus, ChevronRight } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import ReactMarkdown from "react-markdown";
 // import { getAllBlogPost, getAllBlogs, getCategories } from "../data/loader";
 // import LazyImage from "../components/LazyImage";
 
@@ -101,21 +102,18 @@ function BlogPage() {
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [refreshData]);
 
   // Memoize filtered posts to prevent unnecessary recalculations
-  const filteredBlogPost = useMemo(
-    () => {
-      // If we're fetching by category from API, return all posts
-      // If no category is selected, return all posts
-      return blogPost;
-    },
-    [blogPost, selectedCategory]
-  );
+  const filteredBlogPost = useMemo(() => {
+    // If we're fetching by category from API, return all posts
+    // If no category is selected, return all posts
+    return blogPost;
+  }, [blogPost, selectedCategory]);
 
   // Memoize date calculations
   const { dayOfWeek, formattedDate } = useMemo(() => {
@@ -176,10 +174,14 @@ function BlogPage() {
       <div className="!flex !items-center !justify-center !min-h-screen">
         <div className="!text-center">
           <h2 className="!text-2xl !font-bold !mb-4">
-            {selectedCategory ? `No posts found in "${selectedCategory}" category` : "No blog posts found"}
+            {selectedCategory
+              ? `No posts found in "${selectedCategory}" category`
+              : "No blog posts found"}
           </h2>
           <p className="!text-gray-600">
-            {selectedCategory ? "Try selecting a different category or check back later for new content!" : "Check back later for new content!"}
+            {selectedCategory
+              ? "Try selecting a different category or check back later for new content!"
+              : "Check back later for new content!"}
           </p>
           {selectedCategory && (
             <button
@@ -251,7 +253,9 @@ function BlogPage() {
                 <div className="!flex !overflow-x-auto !space-x-4 !pb-2 !flex-1">
                   <motion.button
                     className={`!text-sm sm:!text-base !whitespace-nowrap !cursor-pointer hover:!border-b hover:!border-blue-900 !transition-all !font-medium ${
-                      !selectedCategory ? "!border-b-2 !border-blue-900 !text-blue-900" : ""
+                      !selectedCategory
+                        ? "!border-b-2 !border-blue-900 !text-blue-900"
+                        : ""
                     }`}
                     onClick={() => handleCategorySelect(null)}
                     whileHover={{ scale: 1.05 }}
@@ -261,7 +265,9 @@ function BlogPage() {
                   {categoriesToShow?.map((item, index) => (
                     <motion.button
                       className={`!text-sm sm:!text-base !whitespace-nowrap !cursor-pointer hover:!border-b hover:!border-blue-900 !transition-all !font-medium ${
-                        selectedCategory === item.name ? "!border-b-2 !border-blue-900 !text-blue-900" : ""
+                        selectedCategory === item.name
+                          ? "!border-b-2 !border-blue-900 !text-blue-900"
+                          : ""
                       }`}
                       key={index}
                       onClick={() => handleCategorySelect(item.name)}
@@ -292,7 +298,9 @@ function BlogPage() {
                 >
                   <svg
                     className={`!w-8 !h-8 sm:!w-10 sm:!h-10 !p-2 !rounded-lg ${
-                      isLoading ? "!text-gray-400 !bg-gray-200" : "!text-white !bg-[#022759]"
+                      isLoading
+                        ? "!text-gray-400 !bg-gray-200"
+                        : "!text-white !bg-[#022759]"
                     }`}
                     fill="none"
                     stroke="currentColor"
@@ -321,7 +329,9 @@ function BlogPage() {
               <div className="!flex !items-center !justify-center !gap-10 !space-x-8 !flex-1">
                 <motion.button
                   className={`!text-lg !shadow-sm !cursor-pointer hover:!border-b !bg-gray-100 !py-2 !px-4 !rounded-xl hover:!border-blue-900 !transition-all !font-medium ${
-                    !selectedCategory ? "!border-b-2 !border-blue-900 !text-blue-900 !bg-blue-50" : ""
+                    !selectedCategory
+                      ? "!border-b-2 !border-blue-900 !text-blue-900 !bg-blue-50"
+                      : ""
                   }`}
                   onClick={() => handleCategorySelect(null)}
                   whileHover={{ scale: 1.05 }}
@@ -331,7 +341,9 @@ function BlogPage() {
                 {categoriesToShow?.map((item, index) => (
                   <motion.button
                     className={`!text-lg !cursor-pointer hover:!border-b !bg-gray-100 !py-2 !px-4 !rounded-xl !shadow-sm hover:!border-blue-900 !transition-all !font-medium ${
-                      selectedCategory === item.name ? "!border-b-2 !border-blue-900 !text-blue-900 !bg-blue-50" : ""
+                      selectedCategory === item.name
+                        ? "!border-b-2 !border-blue-900 !text-blue-900 !bg-blue-50"
+                        : ""
                     }`}
                     key={index}
                     onClick={() => handleCategorySelect(item.name)}
@@ -363,7 +375,9 @@ function BlogPage() {
                 >
                   <svg
                     className={`!w-10 !h-10 !p-2 !rounded-lg ${
-                      isLoading ? "!text-gray-400 !bg-gray-200" : "!text-white !bg-[#022759]"
+                      isLoading
+                        ? "!text-gray-400 !bg-gray-200"
+                        : "!text-white !bg-[#022759]"
                     }`}
                     fill="none"
                     stroke="currentColor"
@@ -390,7 +404,9 @@ function BlogPage() {
               transition={{ duration: 0.3 }}
             >
               <div className="!flex !items-center !justify-center !gap-3">
-                <span className="!text-sm !text-gray-600">Showing posts in:</span>
+                <span className="!text-sm !text-gray-600">
+                  Showing posts in:
+                </span>
                 <span className="!text-sm !font-semibold !text-blue-900 !bg-blue-50 !px-3 !py-1 !rounded-full">
                   {selectedCategory}
                 </span>
@@ -449,14 +465,16 @@ function BlogPage() {
                     className="!object-cover !rounded-2xl !w-full !h-full"
                   />
                   <p className="!text-xs !text-gray-500 !font-medium !mt-2">
-                    {latestPost?.createdAt ? new Date(latestPost.createdAt).toLocaleDateString(
-                      "en-US",
-                      {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      }
-                    ) : ""}
+                    {latestPost?.createdAt
+                      ? new Date(latestPost.createdAt).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          }
+                        )
+                      : ""}
                   </p>
                 </motion.div>
 
@@ -469,10 +487,12 @@ function BlogPage() {
                   <h1 className="!text-lg sm:!text-xl lg:!text-lg xl:!text-xl !font-bold !text-gray-900 lg:!text-gray-900">
                     {latestPost?.topic}
                   </h1>
-                  <p className="!text-sm !font-medium !mt-2">
-                    {latestPost?.content?.split(" ").slice(0, 40).join(" ") +
-                      "..."}
-                  </p>
+                  <div className="!prose !prose-sm !max-w-none !text-justify !text-gray-700 !leading-relaxed !mt-2">
+                    <ReactMarkdown>
+                      {latestPost?.content?.split(" ").slice(0, 6).join(" ") +
+                        "..." || ""}
+                    </ReactMarkdown>
+                  </div>
                   <p className="!text-xs !text-gray-500 !font-medium !mt-2">
                     {formattedDate}
                   </p>
@@ -536,10 +556,14 @@ function BlogPage() {
                   {filteredBlogPost.length === 0 ? (
                     <div className="!text-center !col-span-full">
                       <h2 className="!text-2xl !font-bold !mb-4">
-                        {selectedCategory ? `No posts found in "${selectedCategory}" category` : "No blog posts found"}
+                        {selectedCategory
+                          ? `No posts found in "${selectedCategory}" category`
+                          : "No blog posts found"}
                       </h2>
                       <p className="!text-gray-600">
-                        {selectedCategory ? "Try selecting a different category or check back later for new content!" : "Check back later for new content!"}
+                        {selectedCategory
+                          ? "Try selecting a different category or check back later for new content!"
+                          : "Check back later for new content!"}
                       </p>
                       {selectedCategory && (
                         <button
@@ -656,14 +680,16 @@ function BlogPage() {
                     loading="lazy"
                   />
                   <p className="!text-xs !text-gray-500 !font-medium !mt-2">
-                    {latestPost?.createdAt ? new Date(latestPost.createdAt).toLocaleDateString(
-                      "en-US",
-                      {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      }
-                    ) : ""}
+                    {latestPost?.createdAt
+                      ? new Date(latestPost.createdAt).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          }
+                        )
+                      : ""}
                   </p>
                 </motion.div>
                 <motion.div
@@ -671,13 +697,15 @@ function BlogPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <h1 className="!text-xl !font-bold !mt-20">
+                  <h1 className="!text-xl !font-bold !mt-4">
                     {latestPost?.topic}
                   </h1>
-                  <p className="!text-sm !font-medium !mt-2">
-                    {latestPost?.content?.split(" ").slice(0, 80).join(" ") +
-                      "..."}
-                  </p>
+                  <div className="!prose !prose-sm !max-w-none !text-justify !text-gray-700 !leading-relaxed !mt-2">
+                    <ReactMarkdown>
+                      {latestPost?.content?.split(" ").slice(0, 40).join(" ") +
+                        "..." || ""}
+                    </ReactMarkdown>
+                  </div>
                   <p className="!text-xs !text-gray-500 !font-medium !mt-2">
                     {formattedDate}
                   </p>
@@ -738,10 +766,14 @@ function BlogPage() {
                   {filteredBlogPost.length === 0 ? (
                     <div className="!text-center !py-8">
                       <h2 className="!text-lg !font-bold !mb-2">
-                        {selectedCategory ? `No posts found in "${selectedCategory}" category` : "No blog posts found"}
+                        {selectedCategory
+                          ? `No posts found in "${selectedCategory}" category`
+                          : "No blog posts found"}
                       </h2>
                       <p className="!text-gray-600 !text-sm">
-                        {selectedCategory ? "Try selecting a different category or check back later for new content!" : "Check back later for new content!"}
+                        {selectedCategory
+                          ? "Try selecting a different category or check back later for new content!"
+                          : "Check back later for new content!"}
                       </p>
                       {selectedCategory && (
                         <button
@@ -753,13 +785,15 @@ function BlogPage() {
                       )}
                     </div>
                   ) : (
-                    filteredBlogPost.slice(0, 3).map((blog, index) => (
-                      <BlogCard
-                        key={`col2-${blog.id}-${index}`}
-                        blog={blog}
-                        index={index}
-                      />
-                    ))
+                    filteredBlogPost
+                      .slice(0, 3)
+                      .map((blog, index) => (
+                        <BlogCard
+                          key={`col2-${blog.id}-${index}`}
+                          blog={blog}
+                          index={index}
+                        />
+                      ))
                   )}
                 </div>
               </motion.div>
@@ -787,10 +821,14 @@ function BlogPage() {
                   {filteredBlogPost.length === 0 ? (
                     <div className="!text-center !py-8">
                       <h2 className="!text-lg !font-bold !mb-2">
-                        {selectedCategory ? `No posts found in "${selectedCategory}" category` : "No blog posts found"}
+                        {selectedCategory
+                          ? `No posts found in "${selectedCategory}" category`
+                          : "No blog posts found"}
                       </h2>
                       <p className="!text-gray-600 !text-sm">
-                        {selectedCategory ? "Try selecting a different category or check back later for new content!" : "Check back later for new content!"}
+                        {selectedCategory
+                          ? "Try selecting a different category or check back later for new content!"
+                          : "Check back later for new content!"}
                       </p>
                       {selectedCategory && (
                         <button
@@ -802,13 +840,15 @@ function BlogPage() {
                       )}
                     </div>
                   ) : (
-                    filteredBlogPost.slice(3, 6).map((blog, index) => (
-                      <BlogCard
-                        key={`col3-${blog.id}-${index}`}
-                        blog={blog}
-                        index={index}
-                      />
-                    ))
+                    filteredBlogPost
+                      .slice(3, 6)
+                      .map((blog, index) => (
+                        <BlogCard
+                          key={`col3-${blog.id}-${index}`}
+                          blog={blog}
+                          index={index}
+                        />
+                      ))
                   )}
                 </div>
               </motion.div>

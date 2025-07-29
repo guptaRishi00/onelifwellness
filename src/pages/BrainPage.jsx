@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import React from "react";
+import { ArrowBigRight, ArrowRight } from "lucide-react";
 
 function BrainPage() {
   return (
@@ -182,9 +184,12 @@ function BrainPage() {
           </div>
 
           <div className="!text-center">
-            <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-bold !py-3 !px-6 !rounded-full">
-              📖 Read More: How the Brain Develops Over a Lifetime
-            </button>
+            <Link to="/blog-page?organType=Brain">
+              <button className="!bg-green-300 flex  !hover:bg-green-400 !text-blue-900 !font-bold !py-3 !px-6 gap-2 !mx-auto  items-center justify-center !rounded-full">
+                📖 Read More: How the Brain Develops Over a Lifetime
+                <ArrowRight />
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -266,9 +271,12 @@ function BrainPage() {
           </div>
 
           <div className="!text-center">
-            <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-bold !py-3 !px-6 !rounded-full">
-              🧠 Read More: 10 Common Brain Myths
-            </button>
+            <Link to={"/blog-page?organType=Brain"} className="!inline-block">
+              <button className="!bg-green-300 !hover:bg-green-400 flex items-center gap-2 !text-blue-900 !font-bold !py-3 !px-6 !rounded-full">
+                🧠 Read More: 10 Common Brain Myths
+                <ArrowRight />
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -316,9 +324,15 @@ function BrainPage() {
             </p>
           </div>
 
-          <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full">
-            [Read More: 15 Fascinating Facts About the Brain]
-          </button>
+          <Link
+            to={"/blog-page?organType=Brain"}
+            className="!inline-block !w-full"
+          >
+            <button className="!bg-green-300 !hover:bg-green-400 flex justify-center items-center !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full">
+              [Read More: 15 Fascinating Facts About the Brain]
+              <ArrowRight className="!inline-block !ml-2" />
+            </button>
+          </Link>
         </div>
 
         <h2 className="!text-2xl !font-semibold !text-blue-900 !mb-3">
@@ -397,9 +411,15 @@ function BrainPage() {
             </p>
           </div>
 
-          <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full">
-            [Read More: How to Keep Your Brain Healthy]
-          </button>
+          <Link
+            to={"/blog-page?organType=Brain"}
+            className="!inline-block !w-full"
+          >
+            <button className="!bg-green-300 flex items-center justify-center !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full">
+              [Read More: How to Keep Your Brain Healthy]
+              <ArrowRight className="!inline-block !ml-2" />
+            </button>
+          </Link>
         </div>
 
         <div className="!bg-green-100 !p-5 !rounded-lg !border !border-green-200">

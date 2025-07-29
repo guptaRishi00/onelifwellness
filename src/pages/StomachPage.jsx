@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 function StomachPage() {
   return (
@@ -223,9 +225,12 @@ function StomachPage() {
           </div>
 
           <div className="!text-center">
-            <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-bold !py-3 !px-6 !rounded-full">
-              🍃 Read More: Gut Health Myths Debunked
-            </button>
+            <Link to="/blog-page?organType=Stomach" className="!inline-block">
+              <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-bold !py-3 !px-6 !rounded-full flex items-center gap-2">
+                🍃 Read More: Gut Health Myths Debunked
+                <ArrowRight />
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -274,9 +279,12 @@ function StomachPage() {
             </p>
           </div>
 
-          <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full">
-            [Read More: 15 Fascinating Gut Health Facts]
-          </button>
+          <Link to="/blog-page?organType=Stomach" className="!inline-block !w-full">
+            <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full flex items-center justify-center gap-2">
+              [Read More: 15 Fascinating Gut Health Facts]
+              <ArrowRight className="!inline-block !ml-2" />
+            </button>
+          </Link>
         </div>
 
         <h2 className="!text-2xl !font-semibold !text-blue-900 !mb-3">
@@ -354,9 +362,12 @@ function StomachPage() {
             </p>
           </div>
 
-          <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full">
-            [Read More: Complete Gut Health Guide]
-          </button>
+          <Link to="/blog-page?organType=Stomach" className="!inline-block !w-full">
+            <button className="!bg-green-300 !hover:bg-green-400 !text-blue-900 !font-semibold !py-3 !px-6 !rounded-lg !w-full flex items-center justify-center gap-2">
+              [Read More: Complete Gut Health Guide]
+              <ArrowRight className="!inline-block !ml-2" />
+            </button>
+          </Link>
         </div>
 
         {/* Probiotics Section */}
