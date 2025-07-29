@@ -11,7 +11,7 @@ import { useBlogData } from "../hooks/useBlogData";
 
 const BlogCard = React.memo(({ blog, index }) => (
   <motion.div
-    className="shadow-md rounded-2xl !p-4 sm:!p-5 bg-white flex flex-col gap-4 lg:gap-8"
+    className="!shadow-md !rounded-2xl !p-4 sm:!p-5 !bg-white !flex !flex-col !gap-4 lg:!gap-8"
     whileHover={{
       y: -5,
       boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
@@ -21,15 +21,15 @@ const BlogCard = React.memo(({ blog, index }) => (
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, delay: index * 0.1 }}
   >
-    <div className="flex  sm:flex-row lg:flex-row items-center lg:items-center gap-2 sm:gap-5">
+    <div className="!flex sm:!flex-row lg:!flex-row !items-center lg:!items-center !gap-2 sm:!gap-5">
       <motion.button
-        className="!px-3 !py-1 lg:!p-2 border border-black !text-xs !font-medium rounded self-start"
+        className="!px-3 !py-1 lg:!p-2 !border !border-black !text-xs !font-medium !rounded !self-start"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
         {blog.organType}
       </motion.button>
-      <p className="!text-xs text-gray-500 !font-medium lg:!mt-2">
+      <p className="!text-xs !text-gray-500 !font-medium lg:!mt-2">
         {new Date(blog.createdAt).toLocaleDateString("en-US", {
           year: "numeric",
           month: "short",
@@ -37,14 +37,14 @@ const BlogCard = React.memo(({ blog, index }) => (
         })}
       </p>
     </div>
-    <div className="flex flex-col gap-2">
-      <h3 className="text-base sm:!text-lg !font-bold">{blog.title}</h3>
-      <p className="text-gray-400 font-medium text-sm">
+    <div className="!flex !flex-col !gap-2">
+      <h3 className="!text-base sm:!text-lg !font-bold">{blog.title}</h3>
+      <p className="!text-gray-400 !font-medium !text-sm">
         {(blog.content ?? "").split(" ").slice(0, 15).join(" ") + "..."}
       </p>
       <Link to={`/blog-detail/${blog.slug}`}>
         <motion.p
-          className="text-blue-500 underline cursor-pointer !text-sm"
+          className="!text-blue-500 !underline !cursor-pointer !text-sm"
           whileHover={{ scale: 1.02, x: 5 }}
           transition={{ duration: 0.2 }}
         >
@@ -66,8 +66,15 @@ function BlogPage() {
   useEffect(() => {
     if (organTypeParam) {
       setSelectedCategory(organTypeParam);
+      // Reset to page 1 when category is selected from URL
+      setPage(1);
     }
   }, [organTypeParam]);
+
+  // Reset to page 1 when category changes
+  useEffect(() => {
+    setPage(1);
+  }, [selectedCategory]);
 
   // console.log("organTypeParam: ", organTypeParam);
 
@@ -75,19 +82,39 @@ function BlogPage() {
 
   const {
     blogPost,
-
     categories,
     pageCount,
     isLoading,
     error,
     latestPost,
     getFilteredPosts,
-  } = useBlogData(page);
+    refreshData,
+  } = useBlogData(page, selectedCategory);
+
+  console.log("blogPost: ", blogPost);
+
+  // Auto-refresh when page becomes visible (in case new blogs were added)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        refreshData();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [refreshData]);
 
   // Memoize filtered posts to prevent unnecessary recalculations
   const filteredBlogPost = useMemo(
-    () => getFilteredPosts(selectedCategory),
-    [getFilteredPosts, selectedCategory]
+    () => {
+      // If we're fetching by category from API, return all posts
+      // If no category is selected, return all posts
+      return blogPost;
+    },
+    [blogPost, selectedCategory]
   );
 
   // Memoize date calculations
@@ -112,6 +139,12 @@ function BlogPage() {
     [categories, showAllCategories]
   );
 
+  // Handle category selection
+  const handleCategorySelect = useCallback((category) => {
+    setSelectedCategory(category);
+    setPage(1); // Reset to page 1 when category changes
+  }, []);
+
   // Show skeleton while loading
   if (isLoading) {
     return <BlogSkeleton />;
@@ -120,13 +153,13 @@ function BlogPage() {
   // Show error state
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>
-          <p className="text-gray-600 mb-4">{error}</p>
+      <div className="!flex !items-center !justify-center !min-h-screen">
+        <div className="!text-center">
+          <h2 className="!text-2xl !font-bold !mb-4">Something went wrong</h2>
+          <p className="!text-gray-600 !mb-4">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="!px-4 !py-2 !bg-blue-500 !text-white !rounded hover:!bg-blue-600"
           >
             Try Again
           </button>
@@ -135,19 +168,31 @@ function BlogPage() {
     );
   }
 
-  // Show empty state
+  console.log("latestPost: ", latestPost?.title);
+
+  // Check if we have any blog posts
   if (!latestPost || !Array.isArray(blogPost) || blogPost.length === 0) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">No blog posts found</h2>
-          <p className="text-gray-600">Check back later for new content!</p>
+      <div className="!flex !items-center !justify-center !min-h-screen">
+        <div className="!text-center">
+          <h2 className="!text-2xl !font-bold !mb-4">
+            {selectedCategory ? `No posts found in "${selectedCategory}" category` : "No blog posts found"}
+          </h2>
+          <p className="!text-gray-600">
+            {selectedCategory ? "Try selecting a different category or check back later for new content!" : "Check back later for new content!"}
+          </p>
+          {selectedCategory && (
+            <button
+              onClick={() => handleCategorySelect(null)}
+              className="!mt-4 !px-4 !py-2 !bg-blue-500 !text-white !rounded hover:!bg-blue-600"
+            >
+              View All Posts
+            </button>
+          )}
         </div>
       </div>
     );
   }
-
-  console.log("latestPost: ", latestPost.title);
 
   // Animation variants
   const containerVariants = {
@@ -205,17 +250,21 @@ function BlogPage() {
               <div className="!flex !items-center !justify-between">
                 <div className="!flex !overflow-x-auto !space-x-4 !pb-2 !flex-1">
                   <motion.button
-                    className="!text-sm sm:!text-base !whitespace-nowrap !cursor-pointer hover:!border-b hover:!border-blue-900 !transition-all !font-medium"
-                    onClick={() => setSelectedCategory(null)}
+                    className={`!text-sm sm:!text-base !whitespace-nowrap !cursor-pointer hover:!border-b hover:!border-blue-900 !transition-all !font-medium ${
+                      !selectedCategory ? "!border-b-2 !border-blue-900 !text-blue-900" : ""
+                    }`}
+                    onClick={() => handleCategorySelect(null)}
                     whileHover={{ scale: 1.05 }}
                   >
                     All
                   </motion.button>
                   {categoriesToShow?.map((item, index) => (
                     <motion.button
-                      className="!text-sm sm:!text-base !whitespace-nowrap !cursor-pointer hover:!border-b hover:!border-blue-900 !transition-all !font-medium"
+                      className={`!text-sm sm:!text-base !whitespace-nowrap !cursor-pointer hover:!border-b hover:!border-blue-900 !transition-all !font-medium ${
+                        selectedCategory === item.name ? "!border-b-2 !border-blue-900 !text-blue-900" : ""
+                      }`}
                       key={index}
-                      onClick={() => setSelectedCategory(item.name)}
+                      onClick={() => handleCategorySelect(item.name)}
                       whileHover={{ scale: 1.05 }}
                     >
                       {item.name}
@@ -234,6 +283,29 @@ function BlogPage() {
                     <CirclePlus className="!text-white !bg-[#022759] !w-8 !h-8 sm:!w-10 sm:!h-10 !p-2 !rounded-lg" />
                   </motion.button>
                 )}
+                <motion.button
+                  className="!ml-2 !flex-shrink-0"
+                  whileHover={{ scale: 1.1, rotate: 180 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={refreshData}
+                  disabled={isLoading}
+                >
+                  <svg
+                    className={`!w-8 !h-8 sm:!w-10 sm:!h-10 !p-2 !rounded-lg ${
+                      isLoading ? "!text-gray-400 !bg-gray-200" : "!text-white !bg-[#022759]"
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                    />
+                  </svg>
+                </motion.button>
               </div>
             </div>
 
@@ -246,19 +318,23 @@ function BlogPage() {
               </div>
 
               {/* Categories */}
-              <div className="!flex !items-center !justify-center gap-10 !space-x-8 !flex-1">
+              <div className="!flex !items-center !justify-center !gap-10 !space-x-8 !flex-1">
                 <motion.button
-                  className="!text-lg shadow-sm !cursor-pointer hover:!border-b !bg-gray-100 !py-2 !px-4 rounded-xl hover:!border-blue-900 !transition-all !font-medium"
-                  onClick={() => setSelectedCategory(null)}
+                  className={`!text-lg !shadow-sm !cursor-pointer hover:!border-b !bg-gray-100 !py-2 !px-4 !rounded-xl hover:!border-blue-900 !transition-all !font-medium ${
+                    !selectedCategory ? "!border-b-2 !border-blue-900 !text-blue-900 !bg-blue-50" : ""
+                  }`}
+                  onClick={() => handleCategorySelect(null)}
                   whileHover={{ scale: 1.05 }}
                 >
                   All
                 </motion.button>
                 {categoriesToShow?.map((item, index) => (
                   <motion.button
-                    className="!text-lg !cursor-pointer hover:!border-b !bg-gray-100 !py-2 !px-4 rounded-xl shadow-sm hover:!border-blue-900 !transition-all !font-medium"
+                    className={`!text-lg !cursor-pointer hover:!border-b !bg-gray-100 !py-2 !px-4 !rounded-xl !shadow-sm hover:!border-blue-900 !transition-all !font-medium ${
+                      selectedCategory === item.name ? "!border-b-2 !border-blue-900 !text-blue-900 !bg-blue-50" : ""
+                    }`}
                     key={index}
-                    onClick={() => setSelectedCategory(item.name)}
+                    onClick={() => handleCategorySelect(item.name)}
                     whileHover={{ scale: 1.05 }}
                   >
                     {item.name}
@@ -266,19 +342,67 @@ function BlogPage() {
                 ))}
               </div>
 
-              {/* Add Button */}
-              {hasMoreCategories && (
+              {/* Add Button and Refresh */}
+              <div className="!flex !items-center !gap-2">
+                {hasMoreCategories && (
+                  <motion.button
+                    className="!flex-shrink-0"
+                    whileHover={{ scale: 1.1, rotate: 90 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowAllCategories(!showAllCategories)}
+                  >
+                    <CirclePlus className="!text-white !bg-[#022759] !w-10 !h-10 !p-2 !rounded-lg" />
+                  </motion.button>
+                )}
                 <motion.button
                   className="!flex-shrink-0"
-                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileHover={{ scale: 1.1, rotate: 180 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowAllCategories(!showAllCategories)}
+                  onClick={refreshData}
+                  disabled={isLoading}
                 >
-                  <CirclePlus className="!text-white !bg-[#022759] !w-10 !h-10 !p-2 !rounded-lg" />
+                  <svg
+                    className={`!w-10 !h-10 !p-2 !rounded-lg ${
+                      isLoading ? "!text-gray-400 !bg-gray-200" : "!text-white !bg-[#022759]"
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                    />
+                  </svg>
                 </motion.button>
-              )}
+              </div>
             </div>
           </motion.div>
+
+          {/* Category Filter Header */}
+          {selectedCategory && (
+            <motion.div
+              className="!px-4 sm:!px-6 lg:!px-10 !py-2"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="!flex !items-center !justify-center !gap-3">
+                <span className="!text-sm !text-gray-600">Showing posts in:</span>
+                <span className="!text-sm !font-semibold !text-blue-900 !bg-blue-50 !px-3 !py-1 !rounded-full">
+                  {selectedCategory}
+                </span>
+                <button
+                  onClick={() => handleCategorySelect(null)}
+                  className="!text-xs !text-blue-600 hover:!text-blue-800 hover:!underline"
+                >
+                  (Clear filter)
+                </button>
+              </div>
+            </motion.div>
+          )}
 
           {/* Main Content Grid */}
           <motion.div
@@ -300,7 +424,7 @@ function BlogPage() {
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.5 }}
                   >
-                    {latestPost.organType}
+                    {latestPost?.organType}
                     <motion.div
                       whileHover={{ rotate: 180, scale: 1.2 }}
                       transition={{ duration: 0.3 }}
@@ -320,19 +444,19 @@ function BlogPage() {
                   transition={{ duration: 0.3 }}
                 >
                   <img
-                    src={latestPost.picture.url}
+                    src={latestPost?.picture?.url}
                     alt=""
                     className="!object-cover !rounded-2xl !w-full !h-full"
                   />
                   <p className="!text-xs !text-gray-500 !font-medium !mt-2">
-                    {new Date(latestPost.createdAt).toLocaleDateString(
+                    {latestPost?.createdAt ? new Date(latestPost.createdAt).toLocaleDateString(
                       "en-US",
                       {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
                       }
-                    )}
+                    ) : ""}
                   </p>
                 </motion.div>
 
@@ -342,11 +466,11 @@ function BlogPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <h1 className="!text-lg sm:!text-xl lg:!text-lg xl:!text-xl !font-bold text-gray-900 lg:text-gray-900">
-                    {latestPost.topic}
+                  <h1 className="!text-lg sm:!text-xl lg:!text-lg xl:!text-xl !font-bold !text-gray-900 lg:!text-gray-900">
+                    {latestPost?.topic}
                   </h1>
                   <p className="!text-sm !font-medium !mt-2">
-                    {latestPost.content?.split(" ").slice(0, 40).join(" ") +
+                    {latestPost?.content?.split(" ").slice(0, 40).join(" ") +
                       "..."}
                   </p>
                   <p className="!text-xs !text-gray-500 !font-medium !mt-2">
@@ -356,7 +480,7 @@ function BlogPage() {
 
                 {/* Related Images */}
                 <motion.div
-                  className=" !items-center !gap-3 !overflow-x-auto !pb-2 hidden"
+                  className="!items-center !gap-3 !overflow-x-auto !pb-2 !hidden"
                   whileInView={{
                     transition: { staggerChildren: 0.1 },
                   }}
@@ -366,7 +490,7 @@ function BlogPage() {
                       key={index}
                       src="https://plus.unsplash.com/premium_photo-1691223733678-095fee90a0a7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV3c3BhcGVyfGVufDB8fDB8fHww"
                       alt=""
-                      className="!rounded-xl hidden !w-24 sm:!w-32 !h-16 sm:!h-20 !object-cover !flex-shrink-0"
+                      className="!rounded-xl !hidden !w-24 sm:!w-32 !h-16 sm:!h-20 !object-cover !flex-shrink-0"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -375,15 +499,17 @@ function BlogPage() {
                   ))}
                 </motion.div>
 
-                <Link to={`/blog-detail/${latestPost.slug}`}>
-                  <motion.p
-                    className="!text-blue-500 !underline !cursor-pointer !text-sm"
-                    whileHover={{ scale: 1.02, x: 5 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    Continue reading{">>"}
-                  </motion.p>
-                </Link>
+                {latestPost?.slug && (
+                  <Link to={`/blog-detail/${latestPost.slug}`}>
+                    <motion.p
+                      className="!text-blue-500 !underline !cursor-pointer !text-sm"
+                      whileHover={{ scale: 1.02, x: 5 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      Continue reading{">>"}
+                    </motion.p>
+                  </Link>
+                )}
               </motion.div>
 
               {/* Blog Cards - Mobile */}
@@ -407,56 +533,75 @@ function BlogPage() {
                 </motion.h2>
 
                 <div className="!grid !grid-cols-1 sm:!grid-cols-2 !gap-4 sm:!gap-6">
-                  {filteredBlogPost.slice(0, 6).map((blog, index) => (
-                    <motion.div
-                      key={index}
-                      className="!shadow-md !rounded-2xl !p-4 sm:!p-5 !bg-white !flex !flex-col !gap-4"
-                      variants={itemVariants}
-                      whileHover="hover"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                    >
-                      <div className="!flex !flex-col sm:!flex-row sm:!items-center !gap-2 sm:!gap-5">
-                        <motion.button
-                          className="!px-3 !py-1 !border !border-black !text-xs !font-medium !rounded !self-start"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
+                  {filteredBlogPost.length === 0 ? (
+                    <div className="!text-center !col-span-full">
+                      <h2 className="!text-2xl !font-bold !mb-4">
+                        {selectedCategory ? `No posts found in "${selectedCategory}" category` : "No blog posts found"}
+                      </h2>
+                      <p className="!text-gray-600">
+                        {selectedCategory ? "Try selecting a different category or check back later for new content!" : "Check back later for new content!"}
+                      </p>
+                      {selectedCategory && (
+                        <button
+                          onClick={() => handleCategorySelect(null)}
+                          className="!mt-4 !px-4 !py-2 !bg-blue-500 !text-white !rounded hover:!bg-blue-600"
                         >
-                          {blog.organType}
-                        </motion.button>
-                        <p className="!text-xs !text-gray-500 !font-medium">
-                          {new Date(blog.createdAt).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                            }
-                          )}
-                        </p>
-                      </div>
-                      <div className="!flex !flex-col !gap-2">
-                        <h3 className="!text-base sm:!text-lg !font-bold">
-                          {blog.title}
-                        </h3>
-                        <p className="!text-gray-400 !font-medium !text-sm">
-                          {(blog.content ?? "")
-                            .split(" ")
-                            .slice(0, 15)
-                            .join(" ") + "..."}
-                        </p>
-                        <Link to={`/blog-detail/${blog.slug}`}>
-                          <motion.p
-                            className="!text-blue-500 !underline !cursor-pointer !text-sm"
-                            whileHover={{ scale: 1.02, x: 5 }}
+                          View All Posts
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    filteredBlogPost.slice(0, 6).map((blog, index) => (
+                      <motion.div
+                        key={index}
+                        className="!shadow-md !rounded-2xl !p-4 sm:!p-5 !bg-white !flex !flex-col !gap-4"
+                        variants={itemVariants}
+                        whileHover="hover"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                      >
+                        <div className="!flex !flex-col sm:!flex-row sm:!items-center !gap-2 sm:!gap-5">
+                          <motion.button
+                            className="!px-3 !py-1 !border !border-black !text-xs !font-medium !rounded !self-start"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                           >
-                            Continue reading{">>"}
-                          </motion.p>
-                        </Link>
-                      </div>
-                    </motion.div>
-                  ))}
+                            {blog.organType}
+                          </motion.button>
+                          <p className="!text-xs !text-gray-500 !font-medium">
+                            {new Date(blog.createdAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              }
+                            )}
+                          </p>
+                        </div>
+                        <div className="!flex !flex-col !gap-2">
+                          <h3 className="!text-base sm:!text-lg !font-bold">
+                            {blog.title}
+                          </h3>
+                          <p className="!text-gray-400 !font-medium !text-sm">
+                            {(blog.content ?? "")
+                              .split(" ")
+                              .slice(0, 15)
+                              .join(" ") + "..."}
+                          </p>
+                          <Link to={`/blog-detail/${blog.slug}`}>
+                            <motion.p
+                              className="!text-blue-500 !underline !cursor-pointer !text-sm"
+                              whileHover={{ scale: 1.02, x: 5 }}
+                            >
+                              Continue reading{">>"}
+                            </motion.p>
+                          </Link>
+                        </div>
+                      </motion.div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
@@ -475,7 +620,7 @@ function BlogPage() {
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.5 }}
                   >
-                    {latestPost.organType}
+                    {latestPost?.organType}
                     <motion.div
                       whileHover={{ rotate: 180, scale: 1.2 }}
                       transition={{ duration: 0.3 }}
@@ -505,20 +650,20 @@ function BlogPage() {
                   transition={{ duration: 0.3 }}
                 >
                   <img
-                    src={latestPost.picture.url}
+                    src={latestPost?.picture?.url}
                     alt=""
                     className="!object-cover !rounded-2xl !w-full !h-full"
                     loading="lazy"
                   />
                   <p className="!text-xs !text-gray-500 !font-medium !mt-2">
-                    {new Date(latestPost.createdAt).toLocaleDateString(
+                    {latestPost?.createdAt ? new Date(latestPost.createdAt).toLocaleDateString(
                       "en-US",
                       {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
                       }
-                    )}
+                    ) : ""}
                   </p>
                 </motion.div>
                 <motion.div
@@ -527,10 +672,10 @@ function BlogPage() {
                   transition={{ duration: 0.6 }}
                 >
                   <h1 className="!text-xl !font-bold !mt-20">
-                    {latestPost.topic}
+                    {latestPost?.topic}
                   </h1>
                   <p className="!text-sm !font-medium !mt-2">
-                    {latestPost.content?.split(" ").slice(0, 80).join(" ") +
+                    {latestPost?.content?.split(" ").slice(0, 80).join(" ") +
                       "..."}
                   </p>
                   <p className="!text-xs !text-gray-500 !font-medium !mt-2">
@@ -538,7 +683,7 @@ function BlogPage() {
                   </p>
                 </motion.div>
                 <motion.div
-                  className=" !items-center !gap-5 hidden"
+                  className="!items-center !gap-5 !hidden"
                   whileInView={{
                     transition: { staggerChildren: 0.1 },
                   }}
@@ -548,7 +693,7 @@ function BlogPage() {
                       key={index}
                       src="https://plus.unsplash.com/premium_photo-1691223733678-095fee90a0a7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV3c3BhcGVyfGVufDB8fDB8fHww"
                       alt=""
-                      className="!rounded-xl !w-35 hidden"
+                      className="!rounded-xl !w-35 !hidden"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -557,20 +702,22 @@ function BlogPage() {
                     />
                   ))}
                 </motion.div>
-                <Link to={`/blog-detail/${latestPost.slug}`}>
-                  <motion.p
-                    className="!text-blue-500 !underline !cursor-pointer"
-                    whileHover={{ scale: 1.02, x: 5 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    Continue reading{">>"}
-                  </motion.p>
-                </Link>
+                {latestPost?.slug && (
+                  <Link to={`/blog-detail/${latestPost.slug}`}>
+                    <motion.p
+                      className="!text-blue-500 !underline !cursor-pointer"
+                      whileHover={{ scale: 1.02, x: 5 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      Continue reading{">>"}
+                    </motion.p>
+                  </Link>
+                )}
               </motion.div>
 
               {/* Second Column - Desktop */}
               <motion.div variants={itemVariants}>
-                <div className="flex flex-col gap-5">
+                <div className="!flex !flex-col !gap-5">
                   <motion.h1
                     className="!flex !items-center !gap-2 !font-bold !text-xl"
                     initial={{ x: -20, opacity: 0 }}
@@ -583,24 +730,43 @@ function BlogPage() {
                       transition={{ duration: 0.3 }}
                     >
                       <ChevronRight
-                        className="text-white bg-gray-400 p-1 rounded-full"
+                        className="!text-white !bg-gray-400 !p-1 !rounded-full"
                         size={18}
                       />
                     </motion.div>
                   </motion.h1>
-                  {filteredBlogPost.slice(0, 3).map((blog, index) => (
-                    <BlogCard
-                      key={`col2-${blog.id}-${index}`}
-                      blog={blog}
-                      index={index}
-                    />
-                  ))}
+                  {filteredBlogPost.length === 0 ? (
+                    <div className="!text-center !py-8">
+                      <h2 className="!text-lg !font-bold !mb-2">
+                        {selectedCategory ? `No posts found in "${selectedCategory}" category` : "No blog posts found"}
+                      </h2>
+                      <p className="!text-gray-600 !text-sm">
+                        {selectedCategory ? "Try selecting a different category or check back later for new content!" : "Check back later for new content!"}
+                      </p>
+                      {selectedCategory && (
+                        <button
+                          onClick={() => handleCategorySelect(null)}
+                          className="!mt-3 !px-3 !py-1 !bg-blue-500 !text-white !rounded hover:!bg-blue-600 !text-sm"
+                        >
+                          View All Posts
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    filteredBlogPost.slice(0, 3).map((blog, index) => (
+                      <BlogCard
+                        key={`col2-${blog.id}-${index}`}
+                        blog={blog}
+                        index={index}
+                      />
+                    ))
+                  )}
                 </div>
               </motion.div>
 
               {/* Third Column - Desktop */}
               <motion.div variants={itemVariants}>
-                <div className="flex flex-col gap-5">
+                <div className="!flex !flex-col !gap-5">
                   <motion.h1
                     className="!flex !items-center !gap-2 !font-bold !text-xl"
                     initial={{ x: -20, opacity: 0 }}
@@ -613,18 +779,37 @@ function BlogPage() {
                       transition={{ duration: 0.3 }}
                     >
                       <ChevronRight
-                        className="text-white bg-gray-400 p-1 rounded-full"
+                        className="!text-white !bg-gray-400 !p-1 !rounded-full"
                         size={18}
                       />
                     </motion.div>
                   </motion.h1>
-                  {filteredBlogPost.slice(3, 6).map((blog, index) => (
-                    <BlogCard
-                      key={`col3-${blog.id}-${index}`}
-                      blog={blog}
-                      index={index}
-                    />
-                  ))}
+                  {filteredBlogPost.length === 0 ? (
+                    <div className="!text-center !py-8">
+                      <h2 className="!text-lg !font-bold !mb-2">
+                        {selectedCategory ? `No posts found in "${selectedCategory}" category` : "No blog posts found"}
+                      </h2>
+                      <p className="!text-gray-600 !text-sm">
+                        {selectedCategory ? "Try selecting a different category or check back later for new content!" : "Check back later for new content!"}
+                      </p>
+                      {selectedCategory && (
+                        <button
+                          onClick={() => handleCategorySelect(null)}
+                          className="!mt-3 !px-3 !py-1 !bg-blue-500 !text-white !rounded hover:!bg-blue-600 !text-sm"
+                        >
+                          View All Posts
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    filteredBlogPost.slice(3, 6).map((blog, index) => (
+                      <BlogCard
+                        key={`col3-${blog.id}-${index}`}
+                        blog={blog}
+                        index={index}
+                      />
+                    ))
+                  )}
                 </div>
               </motion.div>
             </div>

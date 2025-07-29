@@ -27,6 +27,7 @@
     "react-helmet-async": "^2.0.5",
     "react-icons": "^5.5.0",
     "react-intersection-observer": "^9.15.1",
+    "react-markdown": "^10.1.0",
     "react-phone-number-input": "^3.4.10",
     "react-quill": "^2.0.0",
     "react-router-dom": "^7.1.1",
