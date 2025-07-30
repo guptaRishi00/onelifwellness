@@ -1,8 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function BrainPage() {
   return (
-    <div className="!bg-blue-50 !min-h-screen !py-8 !px-4">
+    <div className="!bg-white !min-h-screen !py-8 !px-4">
       <div className="!w-full !mx-auto !max-w-6xl">
         <h1 className="!text-4xl !font-bold !text-blue-900 !mb-6 !text-center">
           Your Brain: The Key to Your Health and Well-Being
@@ -113,6 +114,12 @@ function BrainPage() {
           years.
         </p>
 
+        <Link to={"/blog-page?organType=Brain"} className="!inline-block !mb-8">
+          <button className="!bg-blue-600 hover:!bg-blue-700 !text-white !font-semibold !py-3 !px-6 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+            [Read More: How the Brain Develops Over a Lifetime]
+          </button>
+        </Link>
+
         <h2 className="!text-3xl !font-bold !text-blue-900 !mb-4">
           Common Myths About the Brain
         </h2>
@@ -160,6 +167,12 @@ function BrainPage() {
           intelligence or make lasting cognitive improvements.
         </p>
 
+        <Link to={"/blog-page?organType=Brain"} className="!inline-block !mb-8">
+          <button className="!bg-blue-600 hover:!bg-blue-700 !text-white !font-semibold !py-3 !px-6 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+            Read More: 10 Common Brain Myths
+          </button>
+        </Link>
+
         <h2 className="!text-3xl !font-bold !text-blue-900 !mb-4">
           Incredible Things Your Brain Can Do
         </h2>
@@ -199,6 +212,12 @@ function BrainPage() {
           constantly fills in gaps, making assumptions to help us process the
           world faster.
         </p>
+
+        <Link to={"/blog-page?organType=Brain"} className="!inline-block !mb-8">
+          <button className="!bg-blue-600 hover:!bg-blue-700 !text-white !font-semibold !py-3 !px-6 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+            Read More: 15 Fascinating Facts About the Brain
+          </button>
+        </Link>
 
         <h2 className="!text-3xl !font-bold !text-blue-900 !mb-4">
           How to Keep Your Brain Healthy
@@ -267,6 +286,12 @@ function BrainPage() {
           meditation, or even deep-breathing exercises can help regulate
           emotions and reduce the harmful effects of stress.
         </p>
+
+        <Link className="!inline-block !mb-8">
+          <button className="!bg-blue-600 hover:!bg-blue-700 !text-white !font-semibold !py-3 !px-6 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+            Read More: How to Keep Your Brain Healthy
+          </button>
+        </Link>
 
         <h2 className="!text-2xl !font-semibold !text-blue-900 !mb-3">
           Important Note

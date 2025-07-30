@@ -2,7 +2,7 @@ import React from "react";
 
 function StomachPage() {
   return (
-    <div className="!bg-blue-50 !min-h-screen !py-8 !px-4">
+    <div className="!bg-white !min-h-screen !py-8 !px-4">
       <div className="!w-full !mx-auto !max-w-4xl">
         <h1 className="!text-4xl !font-bold !text-blue-900 !mb-6 !text-center">
           Your Gut: The Key to Your Overall Well-Being
