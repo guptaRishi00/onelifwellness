@@ -114,7 +114,7 @@ function BrainPage() {
           years.
         </p>
 
-        <Link to={"/blog-page?organType=Brain"} className="!inline-block !mb-8">
+        <Link to={"/blog-detail/the-developing-brain-from-womb-to-early-childhood"} className="!inline-block !mb-8">
           <button className="!bg-blue-600 hover:!bg-blue-700 !text-white !font-semibold !py-3 !px-6 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
             [Read More: How the Brain Develops Over a Lifetime]
           </button>
@@ -287,7 +287,7 @@ function BrainPage() {
           emotions and reduce the harmful effects of stress.
         </p>
 
-        <Link className="!inline-block !mb-8">
+        <Link className="!inline-block !mb-8" to={'/blog-detail/the-brain-in-adulthood-productivity-stress-and-mental-resilience'}>
           <button className="!bg-blue-600 hover:!bg-blue-700 !text-white !font-semibold !py-3 !px-6 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
             Read More: How to Keep Your Brain Healthy
           </button>
