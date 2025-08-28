@@ -167,7 +167,7 @@ function BrainPage() {
           intelligence or make lasting cognitive improvements.
         </p>
 
-        <Link to={"/blog-page?organType=Brain"} className="!inline-block !mb-8">
+        <Link to={"/blog-detail/10-common-brain-myths"} className="!inline-block !mb-8">
           <button className="!bg-blue-600 hover:!bg-blue-700 !text-white !font-semibold !py-3 !px-6 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
             Read More: 10 Common Brain Myths
           </button>
@@ -213,7 +213,7 @@ function BrainPage() {
           world faster.
         </p>
 
-        <Link to={"/blog-page?organType=Brain"} className="!inline-block !mb-8">
+        <Link to={"/blog-detail/15-fascinating-facts-about-the-brain"} className="!inline-block !mb-8">
           <button className="!bg-blue-600 hover:!bg-blue-700 !text-white !font-semibold !py-3 !px-6 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
             Read More: 15 Fascinating Facts About the Brain
           </button>
