@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PhoneInput from "react-phone-number-input";
 import 'react-phone-number-input/style.css';
-import axios from 'axios';
+import emailjs from '@emailjs/browser';
 import { motion } from 'framer-motion';
+import { EMAILJS_CONFIG } from '../config/emailjs';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,11 @@ const Contact = () => {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+  }, []);
 
   const validateForm = () => {
     let newErrors = {};
@@ -52,13 +58,51 @@ const Contact = () => {
     e.preventDefault();
     if (!validateForm()) return;
     setLoading(true);
+    
     try {
-      const response = await axios.post("http://51.112.95.57:5000/send-email", formData);
+      // Prepare template parameters for EmailJS (matching Footer component structure)
+      const templateParams = {
+        name: formData.name,
+        from_email: formData.email,
+        message: `Contact Form Submission:
+        
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phoneNumber}
+Purpose: ${formData.purpose}
+Message: ${formData.message}
+
+Time: ${new Date().toLocaleString()}`,
+        time: new Date().toLocaleString(),
+        user_email: formData.email
+      };
+
+      // Debug: Log what we're sending
+      console.log('Sending Contact Form EmailJS data:', templateParams);
+
+      // Send email using EmailJS
+      const response = await emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID,
+        templateParams
+      );
+
+      console.log('Contact Form EmailJS Result:', response);
+
       if (response.status === 200) {
         setSubmitted(true);
+        // Reset form data
+        setFormData({
+          name: "",
+          email: "",
+          phoneNumber: "",
+          purpose: "",
+          message: "",
+        });
       }
     } catch (error) {
-      setErrors({ form: "Failed to send the form. Please try again." });
+      console.error('Contact Form EmailJS Error Details:', error);
+      setErrors({ form: `Failed to send the form: ${error.message || 'Unknown error'}` });
     } finally {
       setLoading(false);
     }
