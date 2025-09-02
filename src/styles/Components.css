@@ -250,7 +250,7 @@
 
 /* Header Menu Styles */
 .header-menu-container {
-  display: flex;
+  /* display: flex; */
   position: fixed;
   background: #ffffff;
   width: 100%;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const CallToAction = ({ title, description, buttonText, buttonLink }) => {
   return (
@@ -9,9 +10,9 @@ const CallToAction = ({ title, description, buttonText, buttonLink }) => {
           <p>{description}</p>
         </div>
         <div>
-          <a href={buttonLink}>
+          <Link to={buttonLink}>
             <button className="green-button">{buttonText}</button>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

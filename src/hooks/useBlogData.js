@@ -1,7 +1,30 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
 
+// Simple in-memory cache
+const cache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+const getCachedData = (key) => {
+  const cached = cache.get(key);
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.data;
+  }
+  return null;
+};
+
+const setCachedData = (key, data) => {
+  cache.set(key, { data, timestamp: Date.now() });
+};
+
 const getAllBlogPost = async (page, pageSize) => {
+  const cacheKey = `all-blogs-${page}-${pageSize}`;
+  const cachedData = getCachedData(cacheKey);
+  
+  if (cachedData) {
+    return cachedData;
+  }
+
   const response = await axios.get(
     `${
       import.meta.env.VITE_API_STRAPI
@@ -12,6 +35,8 @@ const getAllBlogPost = async (page, pageSize) => {
       },
     }
   );
+  
+  setCachedData(cacheKey, response.data);
   return response.data;
 };
 
@@ -30,6 +55,13 @@ const getBlogPostsByCategory = async (category, page, pageSize) => {
 };
 
 const getCategories = async () => {
+  const cacheKey = 'categories';
+  const cachedData = getCachedData(cacheKey);
+  
+  if (cachedData) {
+    return cachedData;
+  }
+
   const response = await axios.get(
     `${import.meta.env.VITE_API_STRAPI}/api/categories?fields=name`,
     {
@@ -38,6 +70,8 @@ const getCategories = async () => {
       },
     }
   );
+  
+  setCachedData(cacheKey, response.data);
   return response.data;
 };
 

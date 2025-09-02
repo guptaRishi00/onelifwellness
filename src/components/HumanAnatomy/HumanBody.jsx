@@ -12,6 +12,17 @@ function HumanBody({ organType }) {
   const pointsRef = useRef({});
   const [isMobile, setIsMobile] = useState(false);
 
+  // Set brain as default selection on component mount - only for desktop
+  useEffect(() => {
+    if (!isMobile) {
+      setActivePoint("brain");
+      organType("brain");
+    } else {
+      setActivePoint(null);
+      organType(null);
+    }
+  }, [organType, isMobile]);
+
   // Check if the device is mobile based on screen width
   useEffect(() => {
     const checkMobile = () => {
@@ -38,6 +49,9 @@ function HumanBody({ organType }) {
   };
 
   const handlePointClick = (pointName) => {
+    // Only allow card selection on desktop (lg and above)
+    if (isMobile) return;
+    
     setActivePoint(activePoint === pointName ? null : pointName);
     organType(activePoint === pointName ? null : pointName);
   };

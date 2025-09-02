@@ -56,7 +56,7 @@ function InputFields() {
       <motion.form
         ref={form}
         onSubmit={sendEmail}
-        className="bg-white w-[80%] flex flex-col !-mt-10 items-center justify-center shadow-lg !px-7 !py-5 rounded-2xl gap-5"
+        className="bg-white w-[80%] flex flex-col mb-10 !-mt-10 items-center justify-center shadow-lg !px-7 !py-5 rounded-2xl gap-5"
       >
         <div className="flex flex-col items-center justify-center h-full gap-5 w-full">
           <h1 className="!font-bold !text-lg">Enter Details</h1>

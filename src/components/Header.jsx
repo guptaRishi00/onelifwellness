@@ -119,7 +119,7 @@ const Header = () => {
 
         {/* Desktop Menu - Visible on larger screens */}
         <div className="hidden lg:flex items-center !space-x-3">
-          {menuItems.map((item) => (
+          {menuItems.slice(0, 4).map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
@@ -194,11 +194,25 @@ const Header = () => {
               )}
             </AnimatePresence>
           </div>
+
+          {menuItems.slice(4).map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) =>
+                isActive
+                  ? "header-menu-link active !text-gray-700 !font-medium !px-4 !py-2 !rounded-full !bg-white !bg-opacity-90 !backdrop-blur-sm transition-all duration-200 !shadow-sm"
+                  : "header-menu-link !text-gray-600 hover:!text-white !hover:!bg-white !font-medium !px-4 !py-2 !rounded-full !backdrop-blur-sm transition-all duration-200"
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
         </div>
 
         {/* Mobile Menu Button */}
         <div
-          className="!lg:hidden header-hamburger-container cursor-pointer hidden -center !bg-blue-600 !hover:!bg-blue-700 !p-3 !rounded-full transition-all duration-200 !shadow-sm"
+          className="!lg:hidden header-hamburger-container cursor-pointer hidden -center !bg-[#022759] hover:!bg-[#033a73] !p-3 !rounded-full transition-all duration-200 !shadow-sm"
           onClick={toggleMobileMenu}
           aria-label="Toggle menu"
         >
@@ -252,9 +266,13 @@ const Header = () => {
                   variants={itemVariants}
                   className="!px-4 !py-3 border-t border-gray-100"
                 >
-                  <div className="!text-gray-800 !font-medium !mb-3">
+                  <NavLink
+                    to="/human-anatomy"
+                    className="!bg-[#022759] hover:!bg-[#033a73] !text-white !font-medium !mb-3 block !px-4 !py-2 !rounded-lg transition-all duration-150 !text-center"
+                    onClick={handleMenuItemClick}
+                  >
                     Human Anatomy
-                  </div>
+                  </NavLink>
                   <div className="!pl-3 !space-y-2">
                     {anatomySubmenuItems.map((item) => (
                       <div key={item.path} className="block">

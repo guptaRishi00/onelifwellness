@@ -119,9 +119,21 @@ const Footer = () => {
           <ul className="footer-menu-links">
             <li><Link className="footer-menu-items" to="/welcome">Welcome</Link></li>
             <li><Link className="footer-menu-items" to="/who-we-are">Who We Are</Link></li>
-            <li><Link className="footer-menu-items" to="/how-we-work">How we work</Link></li>
+            <li><Link className="footer-menu-items" to="/how-we-work">How We Work</Link></li>
             <li><Link className="footer-menu-items" to="/why-it-matters">Why It Matters</Link></li>
+            <li><Link className="footer-menu-items" to="/human-anatomy">Human Anatomy</Link></li>
+            <li><Link className="footer-menu-items" to="/blog-page">Blog</Link></li>
             <li><Link className="footer-menu-items" to="/lets-talk">Let's Talk</Link></li>
+          </ul>
+        </div>
+
+        <div className="olw-footer-menu-link">
+          <h3>Explore Anatomy</h3>
+          <ul className="footer-menu-links">
+            <li><Link className="footer-menu-items" to="/organ-expand/brain">Brain</Link></li>
+            <li><Link className="footer-menu-items" to="/organ-expand/heart">Heart</Link></li>
+            <li><Link className="footer-menu-items" to="/organ-expand/stomach">Digestive System</Link></li>
+            <li><Link className="footer-menu-items" to="/organ-expand/muscle-arm">Musculoskeletal System</Link></li>
           </ul>
         </div>
       </div>

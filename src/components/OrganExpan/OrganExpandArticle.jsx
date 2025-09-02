@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import CallToAction from "../CallToAction";
 import Testimonials from "./Testimonials";
+import FormattedText from "../FormattedText";
 
 // Component to render a section of the article
 const ArticleSection = ({ title, children }) => (
@@ -27,7 +28,7 @@ const ArticleSection = ({ title, children }) => (
 //       {data.list.map((item, index) => (
 //         <div key={index} className="!mb-4 last:!mb-0">
 //           <p className="font-bold text-[#002B5B] text-lg !mb-2">{item.name}</p>
-//           <ul className="list-disc list-inside text-gray-700 space-y-1">
+//           <ul className="list-disc list-inside text-[#022759] space-y-1">
 //             {item.functions.map((func, i) => (
 //               <li key={i} className="text-sm">
 //                 {func}
@@ -76,12 +77,12 @@ const OrganExpandArticle = ({ data, organType }) => {
           <h1 className="text-5xl font-bold text-[#002B5B] tracking-wide !mb-2">
             {data.title}
           </h1>
-          <p className="text-base text-gray-700 italic">
+          <p className="text-base text-[#022759] italic">
             From One Life Wellness, the comprehensive encyclopedia
           </p>
         </header>
 
-        <main className="text-gray-700 leading-relaxed text-lg">
+        <main className="text-[#022759] leading-relaxed text-lg">
           <div className="bg-[#ADFB49] bg-opacity-20 !p-6 rounded-lg !mb-8 border-l-4 border-[#ADFB49]">
             <p className="text-[#002B5B] font-medium text-xl italic">
               {data.introduction}
@@ -106,7 +107,7 @@ const OrganExpandArticle = ({ data, organType }) => {
                     <span className="font-bold text-[#002B5B] text-lg">
                       {part.name}:
                     </span>{" "}
-                    <span className="text-gray-700">{part.description}</span>
+                    <FormattedText className="text-[#022759]">{part.description}</FormattedText>
                   </div>
                 ))}
               </div>
@@ -129,7 +130,7 @@ const OrganExpandArticle = ({ data, organType }) => {
                       {stage.name}:
                     </span>
                     <span
-                      className="text-gray-700"
+                      className="text-[#022759]"
                       dangerouslySetInnerHTML={{
                         __html: stage.description.replace(
                           /\[\d+\]/g,
@@ -155,7 +156,7 @@ const OrganExpandArticle = ({ data, organType }) => {
                   >
                     <div className="flex items-start">
                       <div>
-                        <span className="font-bold text-gray-700 text-lg block !mb-2">
+                        <span className="font-bold text-[#022759] text-lg block !mb-2">
                           <strong className=""> Myth:</strong> {item.myth}
                         </span>
                         <span className=" text-[#002B5B]">
@@ -189,7 +190,7 @@ const OrganExpandArticle = ({ data, organType }) => {
                         <span className="font-bold text-[#002B5B] text-lg block !mb-2">
                           {tip.title}
                         </span>
-                        <span className="text-gray-700">{tip.description}</span>
+                        <FormattedText className="text-[#022759]">{tip.description}</FormattedText>
                       </div>
                     </div>
                   </div>

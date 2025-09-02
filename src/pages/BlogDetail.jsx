@@ -279,12 +279,99 @@ function BlogDetail() {
                 {blog.topic}
               </motion.h2>
               <motion.div
-                className="!prose !prose-sm !md:!prose-base !lg:!prose-lg !max-w-none !text-justify !text-gray-700 !leading-relaxed !space-y-4"
+                className="!prose !prose-sm !md:!prose-base !lg:!prose-lg !max-w-none !text-justify !text-gray-700 !leading-relaxed !space-y-4 !prose-headings:!text-[#022759] !prose-headings:!font-bold !prose-a:!text-blue-600 !prose-a:!no-underline hover:!prose-a:!underline !prose-strong:!text-[#022759] !prose-code:!bg-gray-100 !prose-code:!px-2 !prose-code:!py-1 !prose-code:!rounded !prose-blockquote:!border-l-4 !prose-blockquote:!border-[#ADFB49] !prose-blockquote:!bg-gray-50 !prose-blockquote:!pl-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                <ReactMarkdown>{blog.content}</ReactMarkdown>
+                <ReactMarkdown
+                  components={{
+                    // Custom heading renderer
+                    h1: ({ children }) => (
+                      <h1 className="!text-2xl !md:!text-3xl !font-bold !text-[#022759] !mt-8 !mb-4 !leading-tight">
+                        {children}
+                      </h1>
+                    ),
+                    h2: ({ children }) => (
+                      <h2 className="!text-xl !md:!text-2xl !font-bold !text-[#022759] !mt-6 !mb-3 !leading-tight">
+                        {children}
+                      </h2>
+                    ),
+                    h3: ({ children }) => (
+                      <h3 className="!text-lg !md:!text-xl !font-bold !text-[#022759] !mt-5 !mb-2 !leading-tight">
+                        {children}
+                      </h3>
+                    ),
+                    // Custom paragraph renderer
+                    p: ({ children }) => (
+                      <p className="!mb-4 !leading-relaxed !text-gray-700">
+                        {children}
+                      </p>
+                    ),
+                    // Custom list renderers
+                    ul: ({ children }) => (
+                      <ul className="!list-disc !list-inside !space-y-2 !mb-4 !ml-4">
+                        {children}
+                      </ul>
+                    ),
+                    ol: ({ children }) => (
+                      <ol className="!list-decimal !list-inside !space-y-2 !mb-4 !ml-4">
+                        {children}
+                      </ol>
+                    ),
+                    li: ({ children }) => (
+                      <li className="!text-gray-700 !leading-relaxed">
+                        {children}
+                      </li>
+                    ),
+                    // Custom blockquote renderer
+                    blockquote: ({ children }) => (
+                      <blockquote className="!border-l-4 !border-[#ADFB49] !bg-gray-50 !pl-4 !py-2 !my-4 !italic !text-gray-600">
+                        {children}
+                      </blockquote>
+                    ),
+                    // Custom code renderer
+                    code: ({ children, className }) => {
+                      const isInline = !className;
+                      return isInline ? (
+                        <code className="!bg-gray-100 !px-2 !py-1 !rounded !text-sm !font-mono !text-gray-800">
+                          {children}
+                        </code>
+                      ) : (
+                        <pre className="!bg-gray-100 !p-4 !rounded-lg !overflow-x-auto !mb-4">
+                          <code className="!text-sm !font-mono !text-gray-800">
+                            {children}
+                          </code>
+                        </pre>
+                      );
+                    },
+                    // Custom link renderer
+                    a: ({ href, children }) => (
+                      <a
+                        href={href}
+                        className="!text-blue-600 !no-underline hover:!underline !font-medium"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {children}
+                      </a>
+                    ),
+                    // Custom strong/bold renderer
+                    strong: ({ children }) => (
+                      <strong className="!font-bold !text-[#022759]">
+                        {children}
+                      </strong>
+                    ),
+                    // Custom emphasis/italic renderer
+                    em: ({ children }) => (
+                      <em className="!italic !text-gray-600">
+                        {children}
+                      </em>
+                    ),
+                  }}
+                >
+                  {blog.content}
+                </ReactMarkdown>
               </motion.div>
             </motion.div>
 

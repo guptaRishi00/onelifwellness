@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 // import { getAllBlogPost, getAllBlogs, getCategories } from "../data/loader";
-// import LazyImage from "../components/LazyImage";
+import LazyImage from "../components/LazyImage";
 
 import BlogSkeleton from "../components/BlogSkeleton";
 import { useBlogData } from "../hooks/useBlogData";
@@ -18,9 +18,9 @@ const BlogCard = React.memo(({ blog, index }) => (
       boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
       transition: { duration: 0.3 },
     }}
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5, delay: index * 0.1 }}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.3 }}
   >
     <div className="!flex sm:!flex-row lg:!flex-row !items-center lg:!items-center !gap-2 sm:!gap-5">
       <motion.button
@@ -229,11 +229,10 @@ function BlogPage() {
     <div className="!flex !flex-col !h-screen lg:!mb-[550px] !mb-[1900px]">
       {/* Hero Section with Background */}
       <div
-        className="!relative !min-h-screen !bg-cover !bg-center !bg-no-repeat"
+        className="!relative !min-h-screen !bg-cover !bg-center !bg-no-repeat !bg-gray-100"
         style={{
           backgroundImage: `url(${bgLogo})`,
           backgroundPosition: "center center",
-          backgroundAttachment: "fixed",
         }}
       >
         {/* Content Container */}
