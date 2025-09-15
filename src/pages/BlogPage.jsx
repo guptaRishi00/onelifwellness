@@ -139,17 +139,20 @@ function BlogPage() {
   );
 
   // Handle category selection
-  const handleCategorySelect = useCallback((category) => {
-    setSelectedCategory(category);
-    setPage(1); // Reset to page 1 when category changes
-    
-    // Update URL based on category selection
-    if (category) {
-      navigate(`/blog-page?organType=${encodeURIComponent(category)}`);
-    } else {
-      navigate('/blog-page');
-    }
-  }, [navigate]);
+  const handleCategorySelect = useCallback(
+    (category) => {
+      setSelectedCategory(category);
+      setPage(1); // Reset to page 1 when category changes
+
+      // Update URL based on category selection
+      if (category) {
+        navigate(`/blog-page?organType=${encodeURIComponent(category)}`);
+      } else {
+        navigate("/blog-page");
+      }
+    },
+    [navigate]
+  );
 
   // Show skeleton while loading
   if (isLoading) {
@@ -495,10 +498,8 @@ function BlogPage() {
                     {latestPost?.topic}
                   </h1>
                   <div className="!prose !prose-sm !max-w-none !text-justify !text-gray-700 !leading-relaxed !mt-2">
-                    <ReactMarkdown>
-                      {latestPost?.content?.split(" ").slice(0, 6).join(" ") +
-                        "..." || ""}
-                    </ReactMarkdown>
+                    {latestPost?.content?.split(" ").slice(0, 6).join(" ") +
+                      "..." || ""}
                   </div>
                   <p className="!text-xs !text-gray-500 !font-medium !mt-2">
                     {formattedDate}
@@ -708,10 +709,8 @@ function BlogPage() {
                     {latestPost?.topic}
                   </h1>
                   <div className="!prose !prose-sm !max-w-none !text-justify !text-gray-700 !leading-relaxed !mt-2">
-                    <ReactMarkdown>
-                      {latestPost?.content?.split(" ").slice(0, 40).join(" ") +
-                        "..." || ""}
-                    </ReactMarkdown>
+                    {latestPost?.content?.split(" ").slice(0, 40).join(" ") +
+                      "..." || ""}
                   </div>
                   <p className="!text-xs !text-gray-500 !font-medium !mt-2">
                     {formattedDate}
