@@ -180,7 +180,7 @@ const Header = () => {
                           to={item.path}
                           className={({ isActive }) =>
                             isActive
-                              ? "header-menu-link active !text-blue-600 !font-medium"
+                              ? "header-menu-link active !text-[#BDF779] !font-medium"
                               : "header-menu-link !text-gray-700 hover:!text-white transition-colors duration-150"
                           }
                           onClick={handleMenuItemClick}
