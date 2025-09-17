@@ -44,6 +44,14 @@ function BrainPage() {
           </FormattedText>
         </p>
 
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/autism-and-the-brain-understanding-neurodivergence"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Explore: Limbic System & Neurodivergence
+            </button>
+          </Link>
+        </div>
+
         <h2 className="!text-3xl !font-bold !text-blue-900 !mb-4">
           How Your Brain Changes with Age
         </h2>
@@ -67,6 +75,19 @@ function BrainPage() {
           common during this stage.
         </p>
 
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/the-developing-brain-from-womb-to-early-childhood"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Childhood: The Rapid Learner
+            </button>
+          </Link>
+          <Link to={"/blog-detail/adhd-and-the-brain-how-it-affects-focus-and-daily-life"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              ADHD & Learning in Childhood
+            </button>
+          </Link>
+        </div>
+
         <h3 className="!text-2xl !font-bold !text-blue-900 !mb-3">
           Teenage Years (10-20 years): The Emotional Explorer
         </h3>
@@ -81,6 +102,14 @@ function BrainPage() {
           pressures.
         </p>
 
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/the-teenage-brain-understanding-emotions-risks-and-growth"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Teenage Years: The Emotional Explorer
+            </button>
+          </Link>
+        </div>
+
         <h3 className="!text-2xl !font-bold !text-blue-900 !mb-3">
           Adulthood (20-40 years): The Prime Time
         </h3>
@@ -92,6 +121,14 @@ function BrainPage() {
           toll, leading to mental fatigue, migraines, and early signs of
           burnout.
         </p>
+
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/the-brain-in-adulthood-productivity-stress-and-mental-resilience"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Adulthood: The Prime Time
+            </button>
+          </Link>
+        </div>
 
         <h3 className="!text-2xl !font-bold !text-blue-900 !mb-3">
           Middle Age (40-65 years): The Wise Thinker
@@ -105,6 +142,14 @@ function BrainPage() {
           of dementia.
         </p>
 
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/middle-age-and-the-brain-memory-focus-and-preventing-cognitive-decline"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Middle Age: The Wise Thinker
+            </button>
+          </Link>
+        </div>
+
         <h3 className="!text-2xl !font-bold !text-blue-900 !mb-3">
           Senior Years (65+ years): The Resilient Mind
         </h3>
@@ -117,11 +162,13 @@ function BrainPage() {
           years.
         </p>
 
-        <Link to={"/blog-detail/the-developing-brain-from-womb-to-early-childhood"} className="!inline-block !mb-8">
-          <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-3 !px-6 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
-            Read More: How the Brain Develops Over a Lifetime
-          </button>
-        </Link>
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/the-aging-brain-common-concerns-and-how-to-stay-mentally-sharp"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Senior Years: The Resilient Mind
+            </button>
+          </Link>
+        </div>
 
         <h2 className="!text-3xl !font-bold !text-blue-900 !mb-4">
           Common Myths About the Brain
@@ -243,6 +290,14 @@ function BrainPage() {
           chocolate protect brain cells from damage, while leafy greens and
           whole grains provide essential nutrients for mental clarity.
         </p>
+
+        <div className="!mb-6 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/food-for-neurodivergence-how-diet-impacts-the-brain"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Food for Neurodivergence
+            </button>
+          </Link>
+        </div>
 
         <h3 className="!text-xl !font-bold !text-blue-900 !mb-2">
           2. Exercise and Brain Health

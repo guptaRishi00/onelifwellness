@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function StomachPage() {
   return (
     <div className="!bg-white !min-h-screen !py-8 !px-4">
-      <div className="!w-full !mx-auto !max-w-4xl">
+      <div className="!w-full !mx-auto !max-w-6xl">
         <h1 className="!text-4xl !font-bold !text-blue-900 !mb-6 !text-center">
           Your Gut: The Key to Your Overall Well-Being
         </h1>
@@ -38,6 +39,31 @@ function StomachPage() {
           and well-being.
         </p>
 
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/digestion-and-gut-function"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Digestion and Gut Function
+            </button>
+          </Link>
+          <Link to={"/blog-detail/the-importance-of-chewing-for-digestion"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              The Importance of Chewing
+            </button>
+          </Link>
+          <Link to={"/blog-detail/how-stomach-acid-affects-digestion"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              How Stomach Acid Affects Digestion
+            </button>
+          </Link>
+          <Link
+            to={"/blog-detail/the-gut-microbiome-and-its-role-in-digestion"}
+          >
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              The Gut Microbiome
+            </button>
+          </Link>
+        </div>
+
         <h2 className="!text-3xl !font-bold !text-blue-900 !mb-4">
           The Gut-Brain Connection
         </h2>
@@ -51,6 +77,18 @@ function StomachPage() {
           depression, and even neurological disorders. This incredible
           connection is why your gut is often called your "second brain."
         </p>
+
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link
+            to={
+              "/blog-detail/the-gut-brain-connection-how-your-gut-affects-mood"
+            }
+          >
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              The Gut-Brain Connection
+            </button>
+          </Link>
+        </div>
 
         <h2 className="!text-3xl !font-bold !text-blue-900 !mb-4">
           Warning Signs of an Unhealthy Gut
@@ -96,6 +134,19 @@ function StomachPage() {
           Getting sick often due to weakened immunity can be linked to poor gut
           health, as 70% of your immune system is located in your gut.
         </p>
+
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/signs-of-an-unhealthy-gut-and-how-to-fix-it"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Signs of an Unhealthy Gut
+            </button>
+          </Link>
+          <Link to={"/blog-detail/gut-health-and-the-immune-system"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Gut Health and the Immune System
+            </button>
+          </Link>
+        </div>
 
         <h3 className="!text-xl !font-bold !text-blue-900 !mb-2">
           Skin Problems
@@ -143,6 +194,16 @@ function StomachPage() {
           diverse nutrients is essential for optimal gut function. Probiotics
           work best as part of a comprehensive gut health strategy.
         </p>
+
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link
+            to={"/blog-detail/prebiotics-vs-probiotics-whats-the-difference"}
+          >
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Prebiotics vs. Probiotics
+            </button>
+          </Link>
+        </div>
 
         <h3 className="!text-xl !font-bold !text-blue-900 !mb-2">
           Myth: Gut issues are always caused by food
@@ -216,6 +277,14 @@ function StomachPage() {
           inflammation.
         </p>
 
+        <div className="!mb-6 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/fibers-role-in-gut-health"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Fiber's Role in Gut Health
+            </button>
+          </Link>
+        </div>
+
         <h3 className="!text-xl !font-bold !text-blue-900 !mb-2">
           2. Stay Properly Hydrated
         </h3>
@@ -228,6 +297,14 @@ function StomachPage() {
           bloodstream.
         </p>
 
+        <div className="!mb-6 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/hydration-and-gut-health-why-water-matters"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Hydration and Gut Health
+            </button>
+          </Link>
+        </div>
+
         <h3 className="!text-xl !font-bold !text-blue-900 !mb-2">
           3. Manage Stress Effectively
         </h3>
@@ -238,6 +315,14 @@ function StomachPage() {
           your gut-brain connection strong. Even short daily relaxation
           practices can significantly improve your gut health.
         </p>
+
+        <div className="!mb-6 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/how-stress-affects-digestion"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              How Stress Affects Digestion
+            </button>
+          </Link>
+        </div>
 
         <h3 className="!text-xl !font-bold !text-blue-900 !mb-2">
           4. Prioritize Quality Sleep
@@ -271,6 +356,16 @@ function StomachPage() {
           can help reduce stress, anxiety, and depression while promoting
           overall cognitive function through the gut-brain connection.
         </p>
+
+        <div className="!mb-6 !flex !flex-wrap !gap-3">
+          <Link
+            to={"/blog-detail/the-best-probiotics-for-gut-and-mental-health"}
+          >
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              The Best Probiotics for Gut and Mental Health
+            </button>
+          </Link>
+        </div>
 
         <h3 className="!text-xl !font-bold !text-blue-900 !mb-2">
           Lactobacillus rhamnosus
@@ -314,6 +409,14 @@ function StomachPage() {
           long-term imbalances in gut flora that may take months to fully
           restore.
         </p>
+
+        <div className="!mb-6 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/the-effects-of-antibiotics-on-gut-health"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              The Effects of Antibiotics on Gut Health
+            </button>
+          </Link>
+        </div>
 
         <h3 className="!text-xl !font-bold !text-blue-900 !mb-2">
           Common Side Effects

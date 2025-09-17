@@ -3,7 +3,7 @@ import React from "react";
 function HeartPage() {
   return (
     <div className="!bg-white !min-h-screen !py-8 !px-4">
-      <div className="!w-full !mx-auto !max-w-4xl">
+      <div className="!w-full !mx-auto !max-w-6xl">
         <h1 className="!text-4xl !font-bold !text-blue-900 !mb-6 !text-center">
           Your Heart: The Key to Your Life and Energy
         </h1>

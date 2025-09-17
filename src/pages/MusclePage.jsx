@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function MusclePage() {
   return (
     <div className="!bg-white !min-h-screen !py-8 !px-4">
-      <div className="!w-full !mx-auto !max-w-4xl">
+      <div className="!w-full !mx-auto !max-w-6xl">
         <h1 className="!text-4xl !font-bold !text-blue-900 !mb-6 !text-center">
           Musculoskeletal System: The Framework of Human Movement
         </h1>
@@ -43,6 +44,14 @@ function MusclePage() {
           through bone remodeling processes.
         </p>
 
+        <div className="!mb-6 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/bone-structure-and-function"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Bone Structure and Function
+            </button>
+          </Link>
+        </div>
+
         <h3 className="!text-2xl !font-bold !text-blue-900 !mb-3">
           Joints: Where Movement Happens
         </h3>
@@ -54,6 +63,14 @@ function MusclePage() {
           fluid.
         </p>
 
+        <div className="!mb-6 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/types-of-joints-and-their-functions"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Types of Joints and Their Functions
+            </button>
+          </Link>
+        </div>
+
         <h3 className="!text-2xl !font-bold !text-blue-900 !mb-3">
           Muscles: The Power Behind Motion
         </h3>
@@ -64,6 +81,14 @@ function MusclePage() {
           signals that trigger interactions between protein filaments.
         </p>
 
+        <div className="!mb-6 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/how-muscles-contract-and-function"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              How Muscles Contract and Function
+            </button>
+          </Link>
+        </div>
+
         <h3 className="!text-2xl !font-bold !text-blue-900 !mb-3">
           Tendons & Ligaments: Connecting the System
         </h3>
@@ -73,6 +98,14 @@ function MusclePage() {
           ligaments stabilize joints and prevent excessive motion. These
           connective tissues provide strength and flexibility to the system.
         </p>
+
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/the-importance-of-tendons-and-ligaments"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              The Importance of Tendons and Ligaments
+            </button>
+          </Link>
+        </div>
 
         <h2 className="!text-3xl !font-bold !text-blue-900 !mb-4">
           How the Musculoskeletal System Works
@@ -88,6 +121,14 @@ function MusclePage() {
           bone strength and mineral balance throughout your lifetime, with the
           entire skeleton being replaced approximately every 10 years.
         </p>
+
+        <div className="!mb-6 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/bone-growth-and-remodeling"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Bone Growth and Remodeling
+            </button>
+          </Link>
+        </div>
 
         <h3 className="!text-xl !font-bold !text-blue-900 !mb-2">
           Muscle Contraction and Movement
@@ -112,6 +153,14 @@ function MusclePage() {
           these joints, reducing friction and wear during movement.
         </p>
 
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/how-joints-enable-movement"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              How Joints Enable Movement
+            </button>
+          </Link>
+        </div>
+
         <h2 className="!text-3xl !font-bold !text-blue-900 !mb-4">
           Common Musculoskeletal Disorders
         </h2>
@@ -133,6 +182,14 @@ function MusclePage() {
           lifestyle.
         </p>
 
+        <div className="!mb-6 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/how-to-prevent-and-manage-osteoporosis"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              How to Prevent and Manage Osteoporosis
+            </button>
+          </Link>
+        </div>
+
         <h3 className="!text-xl !font-bold !text-blue-900 !mb-2">
           Arthritis: Joint Inflammation
         </h3>
@@ -144,6 +201,14 @@ function MusclePage() {
           swelling, reduced range of motion, and morning stiffness.
         </p>
 
+        <div className="!mb-6 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/understanding-arthritis-causes-and-treatment"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              Understanding Arthritis: Causes and Treatment
+            </button>
+          </Link>
+        </div>
+
         <h3 className="!text-xl !font-bold !text-blue-900 !mb-2">
           Muscle Strain and Injuries
         </h3>
@@ -154,6 +219,14 @@ function MusclePage() {
           inadequate warm-up, muscle imbalances, fatigue, and repetitive motions
           without proper rest and recovery.
         </p>
+
+        <div className="!mb-8 !flex !flex-wrap !gap-3">
+          <Link to={"/blog-detail/how-to-prevent-and-treat-muscle-strains"}>
+            <button className="!bg-[#8ae915] hover:!bg-[#76de00] !text-white !font-bold !py-2.5 !px-4 !rounded-lg !shadow-md !transition-colors !duration-200 !ease-in-out hover:!shadow-lg">
+              How to Prevent and Treat Muscle Strains
+            </button>
+          </Link>
+        </div>
 
         <h2 className="!text-3xl !font-bold !text-blue-900 !mb-4">
           How to Keep Your Musculoskeletal System Healthy
