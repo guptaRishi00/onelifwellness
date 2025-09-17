@@ -18,7 +18,7 @@ function MusclePage() {
           storage, and overall structural stability.
         </p>
 
-        <p className="!text-blue-700 !mb-8 !text-center">
+        <p className="!text-[#76de00] !mb-8 !text-center">
           In this guide, we'll explore the anatomy, functions, and common
           disorders of the musculoskeletal system, along with tips to maintain
           strong bones, flexible joints, and healthy muscles.
