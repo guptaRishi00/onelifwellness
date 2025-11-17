@@ -2,7 +2,6 @@ import qs from "qs";
 import { getStrapiURL } from "../utils/getStrapiUrl";
 import { fetchAPI } from "../utils/fetchApi";
 import axios from "axios";
-// import { X } from "lucide-react";
 
 const blogQuery = qs.stringify({
   populate: {
